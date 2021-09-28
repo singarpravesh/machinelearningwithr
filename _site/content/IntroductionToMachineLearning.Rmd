@@ -1,0 +1,28 @@
+---
+title: "Introduction to Machine Learning"
+author: "Pravesh"
+date: "September 2021"
+output: 
+  ioslides_presentation:
+    logo: logo.png
+    transition: slower
+editor_options: 
+  chunk_output_type: console
+---
+
+```{css, echo=FALSE}
+pre {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+pre[class] {
+  max-height: 150px;
+}
+```
+
+```{r, echo=FALSE}
+options(scipen = 999, digits = 4)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+
+```
