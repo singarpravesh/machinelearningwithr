@@ -9,5 +9,7 @@ output: html_document
 ---
 
 
-1. [Introduction](content/IntroductionToMachineLearning.html){target="_blank"}
+### [1. Introduction](content/IntroductionToMachineLearning.html){target="_blank"}
+### [2. Modeling Process](content/ModelingProcess.html){target="_blank"}
+### [3. Linear Regression](content/LinearRegression.html){target="_blank"}
 

@@ -1,0 +1,297 @@
+---
+title: "Linear Regression"
+author: "Pravesh"
+date: "September 2021"
+output: 
+  ioslides_presentation:
+    smaller: true
+    logo: logo.png
+    css: mycss.css
+editor_options: 
+  chunk_output_type: console
+---
+
+```{css, echo=FALSE}
+pre {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+pre[class] {
+  max-height: 150px;
+}
+```
+
+```{r, echo=FALSE}
+options(scipen = 999, digits = 4)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+
+```
+
+## Reference
+- [Hands-On Machine Learning with R](https://bradleyboehmke.github.io/HOML/) by Bradley Boehmke & Brandon Greenwell
+
+
+## Data sets
+```{r}
+library(tidyverse)
+```
+
+
+- Property sales information as described in De Cock (2011).
+  - problem type: supervised regression
+  - response variable: Sale_Price (i.e., $195,000, $215,000)
+  - features: 80
+  - observations: 2,930
+  - objective: use property attributes to predict the sale price of a home
+```{r, message=FALSE, warning=FALSE}
+## install.packages("AmesHousing", dependencies = TRUE)
+## ?AmesHousing::make_ames()
+ames <- AmesHousing::make_ames()
+```
+
+
+---
+
+
+- Employee attrition information originally provided by IBM Watson Analytics Lab.
+  - problem type: supervised binomial classification
+  - response variable: Attrition (i.e., “Yes”, “No”)
+  - features: 30
+  - observations: 1,470
+  - objective: use employee attributes to predict if they will attrit (leave the company)
+```{r, message=FALSE, warning=FALSE}
+## install.packages("modeldata")
+data(attrition, package = "modeldata")
+```
+
+## Introduction
+- Simplest algorithm for doing supervised learning.
+- Good starting point for more advanced approaches.
+- Helper packages
+```{r}
+library(dplyr); library(ggplot2)
+```
+
+- Modeling packages
+```{r}
+library(caret)
+```
+
+- Model interpretability packages
+```{r}
+library(vip)
+```
+
+- Dataset
+```{r}
+library(rsample)
+set.seed(123)
+ames_train <- ames %>% 
+  initial_split(prop = 0.7) %>% 
+  training()
+ 
+ames_test <- ames %>% 
+  initial_split(prop=0.7) %>% 
+  testing()
+```
+
+---
+
+- Estimate the relationship between *above ground living area* `Gr_Liv_Area` and *sale price* `Sale_Price` variables.
+```{r}
+model1 <- lm(Sale_Price ~ Gr_Liv_Area, data = ames_train)
+summary(model1)
+```
+
+---
+
+```{r}
+ggplot(data = ames_train, aes(Gr_Liv_Area, Sale_Price))+
+  geom_point()+
+  geom_smooth(formula = y ~ x, method = "lm")
+
+```
+
+---
+
+- Linear regression provides estimates of the coefficients  $\beta_0$ and $\beta_1$ but not of the error variance $\sigma^2$.
+- Maximum Likelohood Estimation (MLE) used to calculate $\sigma^2$
+  - Assumes a particular distribution i.e Normal distribution for the random errors.
+  - Unbiased estimate of the error variance is given by
+$$
+\hat\sigma^2 = \frac{1}{n-p}\sum_{i=1}^{n}r_i^2
+$$
+ where, $r_i$ is the $i$th residual.
+- $\hat\sigma^2$ is also known as the *mean square error* (MSE) and its square root is known as the *root mean square error* (RMSE).
+- RMSE is reported as `Residual standard error` in the output `summary()`.
+
+## Inference
+- The variability of an estimate is measured by its *standard error* (SE).
+- The SE values are reported in the `summary()` output and given as `Std. Error`.
+- The *t*-statistics are also reported as `t value = Estimate / Std. Error`. It measures the number of standard deviations each coefficient is away from 0.  
+- Higher values of *t* usually greater than 2 in absolute value indicate significance at 0.05 level.
+- The confidence intervals for the coefficients can also be derived under the same assumptions using `confint()`.
+```{r}
+confint(model1, level = 0.95)
+```
+- **Interpretation:** we estimate with 95% confidence that the mean selling price increases between `r confint(model1, level = 0.95)[2,1]` and `r confint(model1, level = 0.95)[2,2]` for each additional one square foot of above ground living space. We can also conclude that the slope $\beta_1$ is significantly different from zero (or any other pre-specified value not included in the interval) at the $\alpha = 0.05$ level. 
+
+## Assessing model accuracy
+- We could have multiple models with different combinations of predictor/feature variables.
+- But the question is which model is the 'best'?
+- RMSE and cross-validation measures used to determine the 'best' model.
+- We shall use the `caret::train()` function to train a linear model (i.e. `method = 'lm'`) using cross-validation or other measures.
+- The benefit of **caret** is that it provides built-in cross-validation capabilities, whereas the `lm()` function does not. 
+
+---
+
+- Refit `model1` using `caret::train()` and 10-fold cross-validation
+```{r}
+# train model1 using the train function in the caret package
+library(caret)
+set.seed(123)
+(cv_model1 <- train(
+  form = Sale_Price ~ Gr_Liv_Area,
+  data = ames_train,
+  method = "lm",
+  trControl = trainControl(method = "cv", number  = 10)
+))
+
+```
+
+
+---
+
+- The resulting cross-validation RMSE is `r mean(cv_model1$resample[,1])` which is the average RMSE across 10 CV folds.
+- How to interpret this?
+  - When applied to unseen data, the predictions this model makes are, on average, about $\$$ `r mean(cv_model1$resample[,1])` off from the actual sale price.
+
+
+---
+
+- Let us perform cross-validation on two more models and decide which one would be the 'best'.
+
+```{r}
+set.seed(123)
+cv_model2 <- train(
+  form = Sale_Price ~ Gr_Liv_Area + Year_Built,
+  data = ames_train,
+  method = "lm",
+  trControl = trainControl(method = "cv", number = 10)
+)
+```
+
+```{r}
+set.seed(123)
+cv_model3 <- train(
+  form = Sale_Price ~ .,
+  data = ames_train,
+  method = "lm",
+  trControl = trainControl(method = "cv", number = 10)
+)
+```
+
+
+---
+
+- Extract out the sample performance measures
+```{r}
+resamples(list(cv_model1, cv_model2, cv_model3)) %>% 
+  summary()
+```
+
+**Interpretation** By adding more predictors, the RMSE reduces considerably from the two predictor model to the full model. In this case the full model or the model with all possible main effects performs the "best".
+
+## Model Concerns
+- Linear regression has been a popular tool due to ease of interpreting the coefficients.
+- Very strong assumptions which are often violated.
+- Violation results in flawed interpretation and prediction results.
+  1. Linear Relationship
+  2. Constant variance among residuals
+  3. No autocorrelation
+  4. More observations than predictors/variables
+  5. No or little multicollinearity
+  
+
+---
+
+
+<ol start=1>
+<li> **Linear Relationship**
+</ol>
+```{r}
+gridExtra::grid.arrange(
+ggplot(data = ames_test,
+       aes(x = Year_Built, y = Sale_Price))+
+  geom_point()+
+  scale_y_continuous()+ 
+  geom_smooth(se = FALSE)+
+  labs(subtitle = "Non-transformed variable with a\nnon-linear relationship"),
+
+ggplot(data = ames_test,
+       aes(x = Year_Built, y = Sale_Price))+
+  geom_point()+
+  scale_y_log10()+
+  geom_smooth(method = "lm", se = FALSE)+
+  labs(subtitle = "Transforming a variable can provide\na near linear relationship",
+       y = 'log10(Sale_Price)'),
+
+nrow = 1)
+
+```
+
+
+---
+
+<ol start=2>
+<li> **Constant variance among residuals**
+</ol>
+```{r}
+df1 <- broom::augment(cv_model1$finalModel, data = ames_train)
+df2 <- broom::augment(cv_model3$finalModel, data = ames_train)
+
+gridExtra::grid.arrange(
+  ggplot(data = df1, aes(x = .fitted, y = .std.resid))+
+    geom_point()+
+    labs(x="Predicted Values",
+         y = "Residuals",
+         title = "Model 1",
+         subtitle = "One feature variable with heteroskedasticity"),
+  ggplot(data = df2, aes(x = .fitted, y = .std.resid))+
+    geom_point()+
+    labs(x="Predicted Values",
+         y = "Residuals",
+         title = "Model 3",
+         subtitle = "More feature variables appears to have\nhomoscedasticity."),
+  nrow = 1
+)
+```
+
+
+---
+
+<ol start=3>
+<li> **No autocorrelation**
+</ol>
+```{r}
+library(tidyverse)
+df1 <- mutate(df1, id = row_number()) 
+df2 <- mutate(df2, id = 1:nrow(df2))
+
+gridExtra::grid.arrange(
+ggplot(data = df1, aes(x = id, y = .std.resid))+
+  geom_point(alpha = 0.4)+
+  labs(title = "Model 1",
+       subtitle = "Correlated residuals"),
+
+ggplot(data = df2, aes(x = id, y = .std.resid))+
+  geom_point(alpha = 0.4)+
+  labs(title = "Model 3",
+       subtitle = "Uncorrelated residuals"),
+nrow=1)
+
+
+```
+
+

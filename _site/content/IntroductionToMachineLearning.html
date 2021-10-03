@@ -3087,18 +3087,18 @@ if (document.readyState !== "loading" &&
     }
 
     slides > slide {
-      -webkit-transition: all 0.6s ease-in-out;
-      -moz-transition: all 0.6s ease-in-out;
-      -o-transition: all 0.6s ease-in-out;
-      transition: all 0.6s ease-in-out;
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
     }
 
     .auto-fadein {
       -webkit-transition: opacity 0.6s ease-in;
-      -webkit-transition-delay: 0.6s;
-      -moz-transition: opacity 0.6s ease-in 0.6s;
-      -o-transition: opacity 0.6s ease-in 0.6s;
-      transition: opacity 0.6s ease-in 0.6s;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
       opacity: 0;
     }
 /* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
@@ -3112,7 +3112,70 @@ slide:not(.current) .plotly.html-widget{
     div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-            
+            code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode { white-space: pre; position: relative; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    code.sourceCode { white-space: pre-wrap; }
+    code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+        
     slides > slide:not(.nobackground):before {
       font-size: 12pt;
       content: "";
@@ -3130,6 +3193,7 @@ slide:not(.current) .plotly.html-widget{
     }
   </style>
 
+  <style type="text/css">blockquote {background: #f9f9f9;border-left: 5px solid #ccc;margin: 1.5em 10px;padding: 0.5em 1.5em;font-size: 16px;}</style>
 
 </head>
 
@@ -3158,6 +3222,143 @@ pre[class] {
   max-height: 150px;
 }
 </style>
+
+<slide class=""><hgroup><h2>Reference</h2></hgroup><article  id="reference" class="smaller ">
+
+<ul>
+<li><a href='https://bradleyboehmke.github.io/HOML/' title=''>Hands-On Machine Learning with R</a> by Bradley Boehmke &amp; Brandon Greenwell</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Introduction</h2></hgroup><article  id="introduction" class="smaller ">
+
+<ul>
+<li>Some example applications of ML
+
+<ol>
+<li>Predicting the likelihood of a patient returning to the hospital.</li>
+<li>Segmenting customers based on certain attributes or purchasing behaviour.</li>
+<li>Predicting coupon redemption rates for a certain marketing campaign.</li>
+</ol></li>
+<li>Tasks that seek to learn from data.</li>
+<li>Use a certain set of <em>features</em> to train an algorithm <em>learner</em> and extract insights.</li>
+<li>Two main groups of algorithms or <em>learners</em>:
+
+<ol>
+<li>Supervised algorithms or <em>learners</em></li>
+<li>Unsupervised algorithms or <em>learners</em>.</li>
+</ol></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Supervised learning</h2></hgroup><article  id="supervised-learning" class="smaller ">
+
+<ul>
+<li>Predictive modeling
+
+<blockquote>
+
+… the process of developing a mathematical tool or a model that generates an accurate prediction. – Kuhn and Johnson (2013)
+
+</blockquote></li>
+<li>\(Y:\) target variable, dependent variable, response, outcome.</li>
+<li>\(X:\) predictor, independent, attribute, feature, predictor.</li>
+<li>The <em>learning algorithm</em> in a <em>predictive model</em> models the relationship among the <em>target</em> and the <em>feature</em>.</li>
+<li>Examples:
+
+<ul>
+<li>Using <em>home attributes</em> to predict the <em>sales price</em>.</li>
+<li>Using <em>patient attributes</em> to predict the risk of <em>readmission</em>.</li>
+</ul></li>
+<li>The above predicting models are examples of <strong>supervised learning</strong>.
+
+<ul>
+<li>In supervised learning the training data includes the <em>target</em> variable.</li>
+<li>Two main categories of supervised learning:
+
+<ol>
+<li>Regression</li>
+<li>Classification</li>
+</ol></li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Regression problems</h2></hgroup><article  id="regression-problems" class="smaller ">
+
+<ul>
+<li><strong>Regression problem:</strong> The objective of the supervised learning is to predict a numerical outcome.</li>
+<li>The <em>target</em> variable is continuous. Example: Predicting home sales prices. <img src="https://bradleyboehmke.github.io/HOML/01-introduction_files/figure-html/intro-regression-problem-1.png"  width="400" height="400"></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Classification problems</h2></hgroup><article  id="classification-problems" class="smaller ">
+
+<ul>
+<li><strong>Classification problem:</strong> The objective of the supervised learning is to predict a categorical outcome.</li>
+<li>Predict a <em>binary</em> or <em>multinomial</em> response
+
+<ul>
+<li>Did a customer redeem a coupon? (Yes or No; 1 or 0)</li>
+<li>Classify a customer review based on 1-5 LIKERT scale.</li>
+</ul></li>
+<li>Machine learning classification problems predict the <em>probability</em> of a particular class (yes or no), rather than the class itself.
+
+<ul>
+<li>By default the class with the highest predicted probability is the predicted class.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Unsupervised learning</h2></hgroup><article  id="unsupervised-learning" class="smaller ">
+
+<ul>
+<li>Uses a set of statistical tools to better understand and describe the data.</li>
+<li>Analysis performed without a target variable.</li>
+<li>Identify groups in data.</li>
+<li><strong>Clustering</strong>
+
+<ul>
+<li>Segment observations into similar groups.</li>
+<li>Eg. divide customers into different homogeneous groups.</li>
+</ul></li>
+<li><strong>Dimension reduction</strong>
+
+<ul>
+<li>Reduce the number of variables in the dataset.</li>
+<li>Eg. reduce the variable/feature set to a smaller set of uncorrelated variables as in linear regression.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Data sets</h2></hgroup><article  id="data-sets" class="smaller ">
+
+<ul>
+<li>Property sales information as described in De Cock (2011).
+
+<ul>
+<li>problem type: supervised regression</li>
+<li>response variable: Sale_Price (i.e., $195,000, $215,000)</li>
+<li>features: 80</li>
+<li>observations: 2,930</li>
+<li>objective: use property attributes to predict the sale price of a home</li>
+</ul></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>## install.packages(&quot;AmesHousing&quot;, dependencies = TRUE)
+## ?AmesHousing::make_ames()
+ames &lt;- AmesHousing::make_ames()</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<ul>
+<li>Employee attrition information originally provided by IBM Watson Analytics Lab.
+
+<ul>
+<li>problem type: supervised binomial classification</li>
+<li>response variable: Attrition (i.e., &ldquo;Yes&rdquo;, &ldquo;No&rdquo;)</li>
+<li>features: 30</li>
+<li>observations: 1,470</li>
+<li>objective: use employee attributes to predict if they will attrit (leave the company)</li>
+</ul></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>## install.packages(&quot;modeldata&quot;)
+data(attrition, package = &quot;modeldata&quot;)</pre></article></slide>
 
 
   <slide class="backdrop"></slide>

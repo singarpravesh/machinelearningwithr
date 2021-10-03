@@ -4,8 +4,9 @@ author: "Pravesh"
 date: "September 2021"
 output: 
   ioslides_presentation:
+    smaller: true
     logo: logo.png
-    transition: slower
+    css: mycss.css
 editor_options: 
   chunk_output_type: console
 ---
@@ -26,3 +27,90 @@ options(scipen = 999, digits = 4)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
 ```
+
+## Reference
+- [Hands-On Machine Learning with R](https://bradleyboehmke.github.io/HOML/) by Bradley Boehmke & Brandon Greenwell
+
+## Introduction
+- Some example applications of ML
+  1. Predicting the likelihood of a patient returning to the hospital.
+  2. Segmenting customers based on certain attributes or purchasing behaviour.
+  3. Predicting coupon redemption rates for a certain marketing campaign.
+- Tasks that seek to learn from data.
+- Use a certain set of *features* to train an algorithm *learner* and extract insights.
+- Two main groups of algorithms or *learners*:
+  1. Supervised algorithms or *learners*
+  2. Unsupervised algorithms or *learners*.
+  
+## Supervised learning
+- Predictive modeling
+<blockquote>
+... the process of developing a mathematical tool or a model that generates an accurate prediction. -- Kuhn and Johnson (2013)
+</blockquote>
+- $Y:$ target variable, dependent variable, response, outcome.
+- $X:$ predictor, independent, attribute, feature, predictor.
+- The *learning algorithm* in a *predictive model* models the relationship among the *target* and the *feature*.
+- Examples:
+  - Using *home attributes* to predict the *sales price*.
+  - Using *patient attributes* to predict the risk of *readmission*.
+- The above predicting models are examples of **supervised learning**.
+  - In supervised learning the training data includes the *target* variable.
+  - Two main categories of supervised learning:
+    1. Regression
+    2. Classification
+
+## Regression problems
+- **Regression problem:** The objective of the supervised learning is to predict a numerical outcome.
+- The *target* variable is continuous. Example: Predicting home sales prices.
+<img src="https://bradleyboehmke.github.io/HOML/01-introduction_files/figure-html/intro-regression-problem-1.png"  width="400" height="400"> 
+
+
+## Classification problems
+- **Classification problem:** The objective of the supervised learning is to predict a categorical outcome.
+- Predict a *binary* or *multinomial* response
+  - Did a customer redeem a coupon? (Yes or No; 1 or 0)
+  - Classify a customer review based on 1-5 LIKERT scale.
+- Machine learning classification problems predict the *probability* of a particular class (yes or no), rather than the class itself.
+  - By default the class with the highest predicted probability is the predicted class.
+  
+## Unsupervised learning
+- Uses a set of statistical tools to better understand and describe the data.
+- Analysis performed without a target variable.
+- Identify groups in data.
+- **Clustering**
+  - Segment observations into similar groups.
+  - Eg. divide customers into different homogeneous groups.
+- **Dimension reduction** 
+  - Reduce the number of variables in the dataset.
+  - Eg. reduce the variable/feature set to a smaller set of uncorrelated variables as in linear regression.
+
+
+## Data sets
+
+- Property sales information as described in De Cock (2011).
+  - problem type: supervised regression
+  - response variable: Sale_Price (i.e., $195,000, $215,000)
+  - features: 80
+  - observations: 2,930
+  - objective: use property attributes to predict the sale price of a home
+```{r, message=FALSE, warning=FALSE}
+## install.packages("AmesHousing", dependencies = TRUE)
+## ?AmesHousing::make_ames()
+ames <- AmesHousing::make_ames()
+```
+
+
+---
+
+
+- Employee attrition information originally provided by IBM Watson Analytics Lab.
+  - problem type: supervised binomial classification
+  - response variable: Attrition (i.e., “Yes”, “No”)
+  - features: 30
+  - observations: 1,470
+  - objective: use employee attributes to predict if they will attrit (leave the company)
+```{r, message=FALSE, warning=FALSE}
+## install.packages("modeldata")
+data(attrition, package = "modeldata")
+```
+

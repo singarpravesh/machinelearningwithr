@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Introduction to Machine Learning</title>
+  <title>Modeling process</title>
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -19,7 +19,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: 'Introduction to Machine Learning',
+                title: 'Modeling process',
                         useBuilds: true,
         usePrettify: true,
         enableSlideAreas: true,
@@ -3229,103 +3229,9 @@ pre[class] {
 <li><a href='https://bradleyboehmke.github.io/HOML/' title=''>Hands-On Machine Learning with R</a> by Bradley Boehmke &amp; Brandon Greenwell</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Introduction</h2></hgroup><article  id="introduction" class="smaller ">
-
-<ul>
-<li>Some example applications of ML
-
-<ol>
-<li>Predicting the likelihood of a patient returning to the hospital.</li>
-<li>Segmenting customers based on certain attributes or purchasing behaviour.</li>
-<li>Predicting coupon redemption rates for a certain marketing campaign.</li>
-</ol></li>
-<li>Tasks that seek to learn from data.</li>
-<li>Use a certain set of <em>features</em> to train an algorithm <em>learner</em> and extract insights.</li>
-<li>Two main groups of algorithms or <em>learners</em>:
-
-<ol>
-<li>Supervised algorithms or <em>learners</em></li>
-<li>Unsupervised algorithms or <em>learners</em>.</li>
-</ol></li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Supervised learning</h2></hgroup><article  id="supervised-learning" class="smaller ">
-
-<ul>
-<li>Predictive modeling
-
-<blockquote>
-
-… the process of developing a mathematical tool or a model that generates an accurate prediction. – Kuhn and Johnson (2013)
-
-</blockquote></li>
-<li>\(Y:\) target variable, dependent variable, response, outcome.</li>
-<li>\(X:\) predictor, independent, attribute, feature, predictor.</li>
-<li>The <em>learning algorithm</em> in a <em>predictive model</em> models the relationship among the <em>target</em> and the <em>feature</em>.</li>
-<li>Examples:
-
-<ul>
-<li>Using <em>home attributes</em> to predict the <em>sales price</em>.</li>
-<li>Using <em>patient attributes</em> to predict the risk of <em>readmission</em>.</li>
-</ul></li>
-<li>The above predicting models are examples of <strong>supervised learning</strong>.
-
-<ul>
-<li>In supervised learning the training data includes the <em>target</em> variable.</li>
-<li>Two main categories of supervised learning:
-
-<ol>
-<li>Regression</li>
-<li>Classification</li>
-</ol></li>
-</ul></li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Regression problems</h2></hgroup><article  id="regression-problems" class="smaller ">
-
-<ul>
-<li><strong>Regression problem:</strong> The objective of the supervised learning is to predict a numerical outcome.</li>
-<li>The <em>target</em> variable is continuous. Example: Predicting home sales prices. <img src="https://bradleyboehmke.github.io/HOML/01-introduction_files/figure-html/intro-regression-problem-1.png"  width="400" height="400"></li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Classification problems</h2></hgroup><article  id="classification-problems" class="smaller ">
-
-<ul>
-<li><strong>Classification problem:</strong> The objective of the supervised learning is to predict a categorical outcome.</li>
-<li>Predict a <em>binary</em> or <em>multinomial</em> response
-
-<ul>
-<li>Did a customer redeem a coupon? (Yes or No; 1 or 0)</li>
-<li>Classify a customer review based on 1-5 LIKERT scale.</li>
-</ul></li>
-<li>Machine learning classification problems predict the <em>probability</em> of a particular class (yes or no), rather than the class itself.
-
-<ul>
-<li>By default the class with the highest predicted probability is the predicted class.</li>
-</ul></li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Unsupervised learning</h2></hgroup><article  id="unsupervised-learning" class="smaller ">
-
-<ul>
-<li>Uses a set of statistical tools to better understand and describe the data.</li>
-<li>Analysis performed without a target variable.</li>
-<li>Identify groups in data.</li>
-<li><strong>Clustering</strong>
-
-<ul>
-<li>Segment observations into similar groups.</li>
-<li>Eg. divide customers into different homogeneous groups.</li>
-</ul></li>
-<li><strong>Dimension reduction</strong>
-
-<ul>
-<li>Reduce the number of variables in the dataset.</li>
-<li>Eg. reduce the variable/feature set to a smaller set of uncorrelated variables as in linear regression.</li>
-</ul></li>
-</ul>
-
 </article></slide><slide class=""><hgroup><h2>Data sets</h2></hgroup><article  id="data-sets" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>library(tidyverse)</pre>
 
 <ul>
 <li>Property sales information as described in De Cock (2011).
@@ -3358,7 +3264,246 @@ ames &lt;- AmesHousing::make_ames()</pre>
 </ul>
 
 <pre class = 'prettyprint lang-r'>## install.packages(&quot;modeldata&quot;)
-data(attrition, package = &quot;modeldata&quot;)</pre></article></slide>
+data(attrition, package = &quot;modeldata&quot;)</pre>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Data splitting</h2></hgroup><article  id="data-splitting" class="smaller ">
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<ul>
+<li>Goal of ML: Find an algorithm \(f(X)\) that most accurately predicts future values \(\hat{Y}\) based on a set of features \(X\).</li>
+<li><strong>Generalisability</strong> of an algorithm:
+
+<ul>
+<li>We want an algorithm that not only fits well to our past data, but also predicts the future outcome accurately.</li>
+</ul></li>
+<li>To provide an understanding of the generalisability of our model we split our data to training and test data sets.</li>
+<li><strong>Training set</strong>: Data used to develop feature sets, train our algorithm, tune hyperparameters, compare models, and all other activities required to choose a final model.</li>
+<li><strong>Test set</strong>: having chosen a final model, this data set is used to estimate an unbiased assessment of the model’s performance, which is referred to as the generalisation error.</li>
+<li>Test set should not be used before the selecting the final model.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<ul>
+<li>Recommendation for data splitting; 60-40, 70-30, or 80-20.</li>
+<li>Spending too much in <em>training</em> (&gt;80) wont allow us a good assessment of predictive performance.
+
+<ul>
+<li>The model might fit the training data very well, but is not generalisable (<em>overfitting</em>).</li>
+</ul></li>
+<li>Spending too much on <em>testing</em> won’t allow to get a good assessment of model parameters.</li>
+<li>Two common ways of splitting data:
+
+<ul>
+<li>Simple random sampling</li>
+<li>Stratified sampling</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Simple random sampling</h2></hgroup><article  id="simple-random-sampling" class="smaller ">
+
+<pre class = 'prettyprint lang-r'># using the rsample package
+library(rsample)
+set.seed(123)
+split_1 &lt;- initial_split(ames, prop = 0.7)
+train_1 &lt;- training(split_1)
+test_1 &lt;- testing(split_1)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Stratified sampling</h2></hgroup><article  id="stratified-sampling" class="smaller ">
+
+<ul>
+<li>The response variable may be severely imbalanced.
+
+<ul>
+<li>90% observations with &ldquo;Yes&rdquo; responses and 10% with &ldquo;No&rdquo; responses.</li>
+<li>A continuous response variable which is positively or negatively skewed.
+
+<ul>
+<li>Segment the response variables into quantiles and randomly sample from each.</li>
+</ul></li>
+</ul></li>
+<li>In the <code>attrition</code> dataset, the variable <code>Attrition</code> has imbalanced responses</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>table(attrition$Attrition) %&gt;% 
+  prop.table()</pre>
+
+<pre >## 
+##     No    Yes 
+## 0.8388 0.1612</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<ul>
+<li>Stratified sampling with <code>rsample</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>set.seed(123)
+split_strata &lt;- initial_split(attrition, prop = 0.7, strata = &quot;Attrition&quot;)
+train_strata &lt;- training(split_strata)
+test_strata &lt;- testing(split_strata)</pre>
+
+<ul>
+<li>Check the proportion of &ldquo;Yes&rdquo; and &ldquo;No&rdquo; responses in the training and the testing data.</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>train_strata$Attrition %&gt;% table() %&gt;% prop.table()</pre>
+
+<pre >## .
+##     No    Yes 
+## 0.8395 0.1605</pre>
+
+<pre class = 'prettyprint lang-r'>test_strata$Attrition %&gt;% table() %&gt;% prop.table()</pre>
+
+<pre >## .
+##     No    Yes 
+## 0.8371 0.1629</pre>
+
+</article></slide><slide class=""><hgroup><h2>Class imbalances</h2></hgroup><article  id="class-imbalances" class="smaller ">
+
+<ul>
+<li>Imbalanced data can impact model predictions and performance.</li>
+<li>Mostly seen in <em>classification</em> problems
+
+<ul>
+<li>5% defaults vs 95% non-defaults</li>
+</ul></li>
+<li>Categories of sampling methods to remedy class imbalances
+
+<ol>
+
+<li>
+
+Up-sampling
+
+</ol>
+
+<ul>
+<li>Quantity of data is not sufficient</li>
+<li>Balance the data by increasing the sample of the rarer samples.</li>
+<li>Samples generated by repetition or bootstrapping.</li>
+</ul>
+
+<ol start=2>
+
+<li>
+
+Down-sampling
+
+</ol>
+
+<ul>
+<li>Reduce the size of the abundant class</li>
+<li>Quantity of data is sufficient</li>
+<li>Keep all the samples in the rare class and randomly select an equal size of samples in the abundant class.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Creating models in R</h2></hgroup><article  id="creating-models-in-r" class="smaller ">
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Resampling methods</h2></hgroup><article  id="resampling-methods" class="smaller ">
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<ul>
+<li>Split the data into <em>training</em> and <em>testing</em> sets.</li>
+<li>The <em>test</em> set cannot be used to assess the model performance.</li>
+<li>How to assess the generalisation performance of the model?</li>
+<li><em>Validation approach</em>
+
+<ul>
+<li>Split the training set to further two parts
+
+<ul>
+<li>Training set</li>
+<li>Validation or holdout set</li>
+</ul></li>
+<li>Train the model on the new training set and estimate the performance on the validation set.</li>
+</ul></li>
+<li><strong>Resampling methods</strong> repeatedly fit a model of interest to parts of the training data and test its performance on other parts.
+
+<ol>
+<li><em>k-fold cross validation</em></li>
+<li><em>bootstrapping</em></li>
+</ol></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><em>k</em>-fold cross validation</h2></hgroup><article  id="k-fold-cross-validation" class="smaller ">
+
+<ul>
+<li>Randomly divides the <em>training</em> data into k-groups (aka folds) of approximately equal size</li>
+<li>The model is fit on <em>k-1</em> folds and the remaining fold is used to compute model performance.</li>
+<li>The procedure is repeated <em>k</em> times, each time a different fold is treated as the validation set.</li>
+<li>This results in <em>k</em> estimates of the generalisation error</li>
+<li>The average of these <em>k</em> estimates gives us the <em>k</em>-fold CV estimate (i.e. an approximation of the error that we might see on unseen data).</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<img width="700px" src='https://bradleyboehmke.github.io/HOML/images/cv.png' title='fig:'/><p class='caption'>Illustration of <em>k</em>-fold cross validation</p>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<ul>
+<li>In practice one typically uses <em>k=5</em> or <em>k=10</em></li>
+<li>There is no formal rule for the size of <em>k</em>.</li>
+<li>As <em>k</em> gets larger, the difference between the estimated performance and true performance to be seen on the test set will decrease.</li>
+<li>On the other hand, using too large <em>k</em> can introduce computational burdens.</li>
+<li>For smaller data sets (say <em>n&lt;10,000</em>), 10-fold CV repeated 5 or 10 times will improve the accuracy of your estimated performance and also provide an estimate of its variability.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<img width="700px" src='https://bradleyboehmke.github.io/HOML/02-modeling-process_files/figure-html/modeling-process-cv-1.png' title='fig:'/><p class='caption'>10-fold cross validation on 32 observations. Each observation is used once for validation and nine times for training.</p>
+
+</article></slide><slide class=""><hgroup><h2>Bootstrapping</h2></hgroup><article  id="bootstrapping" class="smaller ">
+
+<ul>
+<li>A bootstrap sample is a random sample of the data taken with replacement (Efron and Tibshirani 1986).</li>
+<li>A bootstrap sample is the same size as the original data set from which it was constructed.</li>
+<li>bootstrap sampling will contain approximately the same distribution of values. <img width="700px" src='https://bradleyboehmke.github.io/HOML/images/bootstrap-scheme.png' title=''/></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<ul>
+<li>Each bootstrap is likely to contain duplicate values
+
+<ul>
+<li>About 63.21% of original values are found in bootstrap sample.</li>
+</ul></li>
+<li>The observations not contained in bootstrap samples are considered <em>out-of-bag</em> (OOB).</li>
+<li>When bootstrapping, a model can be built on the selected samples and validated on the OOB samples; this is often done, for example, in random forests.</li>
+<li>Observations are replicated in bootstrapping,
+
+<ul>
+<li>less variability in the error measure compared with <em>k</em>-fold CV</li>
+<li>Increase the bias of the error estimate.</li>
+<li>Not an issue with data sets (\(n \geq 1000\)).</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Bias</h2></hgroup><article  id="bias" class="smaller ">
+
+<ul>
+<li>Difference between the expected/average prediction and the correct value which we are trying to predict is known as the <strong>bias</strong>.</li>
+<li>If a model has a high bias, it will have consistency in its resampling performance as illustrated in the figure (right).</li>
+</ul>
+
+<img width="700px" src='https://bradleyboehmke.github.io/HOML/02-modeling-process_files/figure-html/modeling-process-bias-model-1.png' title='fig:'/><p class='caption'>A biased polynomial model fit to a single data set does not capture the underlying non-linear, non-monotonic data structure (left). Models fit to 25 bootstrapped replicates of the data are underterred by the noise and generates similar, yet still biased, predictions (right).</p>
+
+</article></slide><slide class=""><hgroup><h2>Variance</h2></hgroup><article  id="variance" class="smaller ">
+
+<ul>
+<li>Error due to <strong>variance</strong> is defined as the variability of the model prediction for a given data point. <img src='https://bradleyboehmke.github.io/HOML/02-modeling-process_files/figure-html/modeling-process-bias-model-1.png' title=''/></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<ul>
+<li>Since high variance models are more prone to overfitting, using resampling procedures are critical to reduce this risk. - Overfitting: Although you may achieve very good performance on your training data, the model will not automatically generalize well to unseen data.</li>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>
