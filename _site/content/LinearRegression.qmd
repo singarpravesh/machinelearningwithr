@@ -7,6 +7,8 @@ format:
     smaller: true
 execute: 
   echo: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -52,7 +54,7 @@ data(attrition, package = "modeldata")
 - Good starting point for more advanced approaches.
 - Helper packages
 ```{r echo=TRUE}
-library(dplyr); library(ggplot2)
+# library(dplyr); library(ggplot2)
 ```
 
 - Modeling packages
@@ -145,9 +147,9 @@ set.seed(123)
 
 ---
 
-- The resulting cross-validation RMSE is `r mean(cv_model1$resample[,1])` which is the average RMSE across 10 CV folds.
+- The resulting cross-validation RMSE is `r cv_model1$results[,2]` which is the average RMSE across 10 CV folds.
 - How to interpret this?
-  - When applied to unseen data, the predictions this model makes are, on average, about $\$$ `r mean(cv_model1$resample[,1])` off from the actual sale price.
+  - When applied to unseen data, the predictions this model makes are, on average, about $\$$ `r cv_model1$results[,2]` off from the actual sale price.
 
 
 ---
@@ -194,6 +196,7 @@ resamples(list(cv_model1, cv_model2, cv_model3)) %>%
   3. No autocorrelation
   4. More observations than predictors/variables
   5. No or little multicollinearity
+
   
 
 ---
@@ -203,6 +206,8 @@ resamples(list(cv_model1, cv_model2, cv_model3)) %>%
 <li> **Linear Relationship**
 </ol>
 ```{r}
+#| code-fold: true
+options(scipen = 999)
 gridExtra::grid.arrange(
 ggplot(data = ames_test,
        aes(x = Year_Built, y = Sale_Price))+
@@ -230,6 +235,9 @@ nrow = 1)
 <li> **Constant variance among residuals**
 </ol>
 ```{r}
+#| code-fold: true
+# broom::augment() is an easy method to add model results to each observation (i.e. predicted values, residuals, etc.)
+options(scipen = 999)
 df1 <- broom::augment(cv_model1$finalModel, data = ames_train)
 df2 <- broom::augment(cv_model3$finalModel, data = ames_train)
 
@@ -253,11 +261,13 @@ gridExtra::grid.arrange(
 
 ---
 
-<ol start=3>
-<li> **No autocorrelation**
-</ol>
+
+3. **No autocorrelation**
+
 ```{r}
-library(tidyverse)
+#| code-fold: true
+options(scipen = 999)
+# library(tidyverse)
 df1 <- mutate(df1, id = row_number()) 
 df2 <- mutate(df2, id = 1:nrow(df2))
 
@@ -265,15 +275,62 @@ gridExtra::grid.arrange(
 ggplot(data = df1, aes(x = id, y = .std.resid))+
   geom_point(alpha = 0.4)+
   labs(title = "Model 1",
-       subtitle = "Correlated residuals"),
+       subtitle = "Correlated residuals",
+       y = 'residuals'),
 
 ggplot(data = df2, aes(x = id, y = .std.resid))+
   geom_point(alpha = 0.4)+
   labs(title = "Model 3",
-       subtitle = "Uncorrelated residuals"),
+       subtitle = "Uncorrelated residuals",
+       y = "Residuals"),
 nrow=1)
 
+```
 
+---
+
+4. **No or little multicollinearity**
+
+- The variables `Garage_Area` and `Garage_Cars` have a correlation of `r cor(ames$Garage_Area, ames$Garage_Cars)`.
+- Both these variables are strongly related to the response variable `Sale_Price`.
+- We can see that the variable `Garage_Area` is statistically significant, but `Garage_Cars` is not. 
+
+```{r}
+#| code-fold: true
+
+summary(cv_model3) %>% 
+  broom::tidy() %>% 
+  filter(term %in% c("Garage_Area", "Garage_Cars"))
+```
+
+---
+
+- However, if we fit `cv_model3` again without `Garage_Area`, the variable `Garage_Cars` turns out to be significant and the viceversa.
+
+```{r}
+#| code-fold: true
+
+# CV model without `Garage_Area`
+train(
+  form = Sale_Price ~ .,
+  data = select(ames_train, -Garage_Area),
+  trControl = trainControl(method = "cv", number = 10),
+  method = "lm"
+) %>% 
+  summary() %>% 
+  tidy() %>% 
+  filter(term == "Garage_Cars")
+
+# CV model without `Garage_Cars`
+caret::train(
+  form = Sale_Price ~ .,
+  data = select(ames_train, - Garage_Cars),
+  method = "lm",
+  trControl = trainControl(method = "cv", number = 10)
+) %>% 
+  summary() %>% 
+  broom::tidy() %>% 
+  filter(term == "Garage_Area")
 ```
 
 
