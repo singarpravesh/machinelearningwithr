@@ -46,6 +46,7 @@ ames <- AmesHousing::make_ames()
   - objective: use employee attributes to predict if they will attrit (leave the company)
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 ## install.packages("modeldata")
+library(modeldata)
 data(attrition, package = "modeldata")
 ```
 
@@ -333,4 +334,9 @@ caret::train(
   filter(term == "Garage_Area")
 ```
 
+---
+
+- The multicollinearity could be among other regressors as well. 
+- It is really difficult to identify multicollinearity in case of a large number of regressors.
+- It is also not easy to manually remove the related regresors.
 

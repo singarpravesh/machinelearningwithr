@@ -7,7 +7,7 @@
 <link href="LinearRegression_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="LinearRegression_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="LinearRegression_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.179">
+  <meta name="generator" content="quarto-1.0.36">
 
   <meta name="author" content="Pravesh Tamang">
   <title>Linear Regression</title>
@@ -19,15 +19,10 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -434,7 +429,8 @@
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="do">## install.packages("modeldata")</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">data</span>(attrition, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span>(modeldata)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">data</span>(attrition, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="introduction" class="slide level2">
@@ -520,13 +516,13 @@ F-statistic:  1952 on 1 and 2049 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li>Maximum Likelohood Estimation (MLE) used to calculate <span class="math inline">\(\sigma^2\)</span>
 <ul>
 <li>Assumes a particular distribution i.e Normal distribution for the random errors.</li>
-<li>Unbiased estimate of the error variance is given by <span class="math display">\[
-\hat\sigma^2 = \frac{1}{n-p}\sum_{i=1}^{n}r_i^2
-\]</span> where, <span class="math inline">\(r_i\)</span> is the <span class="math inline">\(i\)</span>th residual.</li>
+<li>Unbiased estimate of the error variance is given by</li>
 </ul></li>
-<li><span class="math inline">\(\hat\sigma^2\)</span> is also known as the <em>mean square error</em> (MSE) and its square root is known as the <em>root mean square error</em> (RMSE).</li>
-<li>RMSE is reported as <code>Residual standard error</code> in the output <code>summary()</code>.</li>
 </ul>
+<p><span class="math display">\[
+\hat\sigma^2 = \frac{1}{n-p}\sum_{i=1}^{n}r_i^2
+\]</span></p>
+<p>where, <span class="math inline">\(r_i\)</span> is the <span class="math inline">\(i\)</span>th residual. - <span class="math inline">\(\hat\sigma^2\)</span> is also known as the <em>mean square error</em> (MSE) and its square root is known as the <em>root mean square error</em> (RMSE). - RMSE is reported as <code>Residual standard error</code> in the output <code>summary()</code>.</p>
 </section>
 <section id="inference" class="slide level2">
 <h2>Inference</h2>
@@ -844,6 +840,14 @@ Model3 0.4739520 0.7154205 0.9075988 0.8077398 0.9225830 0.9404901    0</code></
 1 Garage_Area     21.6      3.79      5.71 0.0000000131</code></pre>
 </div>
 </div>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>The multicollinearity could be among other regressors as well.</li>
+<li>It is really difficult to identify multicollinearity in case of a large number of regressors.</li>
+<li>It is also not easy to manually remove the related regresors.</li>
+</ul>
 <div class="footer footer-default">
 
 </div>
@@ -1169,8 +1173,7 @@ Model3 0.4739520 0.7154205 0.9075988 0.8077398 0.9225830 0.9404901    0</code></
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          let href = ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
