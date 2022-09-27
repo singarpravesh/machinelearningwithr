@@ -841,13 +841,24 @@ Model3 0.4739520 0.7154205 0.9075988 0.8077398 0.9225830 0.9404901    0</code></
 </div>
 </div>
 </section>
-<section class="slide level2">
-
+<section id="principal-component-regression" class="slide level2">
+<h2>Principal component regression</h2>
 <ul>
 <li>The multicollinearity could be among other regressors as well.</li>
 <li>It is really difficult to identify multicollinearity in case of a large number of regressors.</li>
-<li>It is also not easy to manually remove the related regresors.</li>
+<li>It is also not easy to detect multicollinearity when one feature is related to two or more features.</li>
+<li>One solution to this problem is to apply <strong>dimension reduction</strong> prior to performing linear regression</li>
+<li>Principal component analysis (PCA) can be used to represent correlated variables with a smaller number of uncorrelated features (called <em>principal components</em>).</li>
+<li>The resulting components can be used as predictors in a linear regression model.</li>
+<li>This two step process is called the <em>principal component regression (PCR)</em>.</li>
 </ul>
+</section>
+<section class="slide level2">
+
+
+<img data-src="https://bradleyboehmke.github.io/HOML/images/pcr-steps.png" class="r-stretch quarto-figure-center"><p class="caption">Steps involved in performing PCR</p></section>
+<section class="slide level2">
+
 <div class="footer footer-default">
 
 </div>
