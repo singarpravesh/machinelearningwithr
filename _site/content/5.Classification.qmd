@@ -1,0 +1,20 @@
+---
+title: "Classification"
+format: 
+  revealjs:
+    scrollable: true
+    code-fold: true
+    echo: true
+    eval: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Classifying based on similarities with *k*-nearest neighbours.
+
+- The *k*-nearest neighbour algorithm uses labeled data and therefore it is a supervised learning algorithm.
+- How does the kNN learn?
+  - Examples of snakes in UK 
+  - Two species of venomous snakes- grass snake and adder.
+  - Slow worm - a limbless reptile mistaken for a snake.
+- Objective: Count the number of 

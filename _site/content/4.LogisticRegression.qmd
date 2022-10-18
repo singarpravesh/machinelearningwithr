@@ -1,0 +1,13 @@
+---
+title: "Logistic Regression"
+author: "Pravesh Tamang"
+format: 
+  revealjs:
+    scrollable: true
+    code-fold: true
+---
+
+## The logistic regression
+
+- For example we have credit card default data for customers.
+- We want to understand - *whether the current credit card balance of a customer is an indicator of whether or not they will default on their credit card*.

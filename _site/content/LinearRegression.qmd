@@ -334,9 +334,23 @@ caret::train(
   filter(term == "Garage_Area")
 ```
 
----
+## Principal component regression
 
 - The multicollinearity could be among other regressors as well. 
 - It is really difficult to identify multicollinearity in case of a large number of regressors.
-- It is also not easy to manually remove the related regresors.
+- It is also not easy to detect multicollinearity when one feature is related to two or more features.
+- One solution to this problem is to apply **dimension reduction** prior to performing linear regression
+- Principal component analysis (PCA) can be used to represent correlated variables with a smaller number of uncorrelated features (called *principal components*).
+- The resulting components can be used as predictors in a linear regression model.
+- This two step process is called the *principal component regression (PCR)*.
+
+---
+
+![Steps involved in performing PCR](https://bradleyboehmke.github.io/HOML/images/pcr-steps.png)
+
+---
+
+
+
+
 
