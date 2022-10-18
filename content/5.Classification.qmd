@@ -17,4 +17,11 @@ editor_options:
   - Examples of snakes in UK 
   - Two species of venomous snakes- grass snake and adder.
   - Slow worm - a limbless reptile mistaken for a snake.
-- Objective: Count the number of 
+- Objective: Build a kNN classifier to help you quickly classify future specimens you come across.
+
+---
+
+- **Figure 3.1** Body length and aggression of reptiles. 
+
+![](5.Classification_files/fig3.1.png)
+
