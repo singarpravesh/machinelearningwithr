@@ -25,3 +25,27 @@ editor_options:
 
 ![](5.Classification_files/fig3.1.png)
 
+
+---
+
+- The *two* phases of the kNN algorithm;
+  1. The training phase: In this phase the algorithm stores the data.
+  2. The prediction phase: In this phase the kNN algorithm calculates the distance between each new, unlabeled case and all the labeled cases. *The term <u> distance </u> indicates the nearness in terms of body-weight and aggression.*
+- The distance metric is often called the **Euclidean distance** (a straight-line distance between two points on a plot).
+
+---
+
+- **Figure 3.2** The first step of kNN algorithm: calculating distance.
+
+![](5.Classification_files/fig3.2.png)
+
+---
+
+- Next, for each unlabeled case, the algorithm ranks the neighbours from the nearest (most similar) to the furthest (the least similar).
+- **Figure 3.3** The second step of the kNN algorithm: ranking the neighbours.
+
+![](5.Classification_files/fig3.3.png)
+
+
+
+
