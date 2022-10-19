@@ -47,5 +47,16 @@ editor_options:
 ![](5.Classification_files/fig3.3.png)
 
 
+---
+
+- The algorithm identifies *k*-labelled cases nearest to unlabeled cases.
+- The *k*-labeled cases are most similar in-terms of the variables to the unlabeled case.
+- Whatever class most of the *k*-nearest neighbours belong to is what the unlabeled case is classified as.
+
+---
+
+- **Figure 3.4** The final step: Identifying the *k*-nearest neighbours and taking the majority vote.
+
+![](5.Classification_files/fig3.4.JPG)
 
 
