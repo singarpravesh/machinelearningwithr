@@ -60,3 +60,24 @@ editor_options:
 ![](5.Classification_files/fig3.4.JPG)
 
 
+## Building your first kNN model.
+- You are trying to improve the diagnosis of patients with diabetes.
+- You collect data and record if they were diagnosed as *healthy*, *chemically diabetic* or *overtly diabetic*.
+- You want to use a kNN algorithm to train a model that can predict which of these classes a new patient will belong to so that diagnoses can be improved.
+- This is a **three class classification** problem.
+
+---
+
+- Lets look at the diabetes data
+```{r}
+# required packages
+library(mclust)
+library(tidyverse)
+library(mlr)
+
+# the dataset
+data(diabetes, package = 'mclust')
+(as_tibble(diabetes) -> diabetes)
+```
+
+
