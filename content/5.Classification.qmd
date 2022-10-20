@@ -80,4 +80,11 @@ data(diabetes, package = 'mclust')
 (as_tibble(diabetes) -> diabetes)
 ```
 
+- The `class` shows three cases of diabetes - Normal, Chemical, and Overt.
+- `glucose`: the level of blood glucose.
+- `insulin`: the level of insulin 
+- `sspg`: steady state level of blood glucose.
+
+---
+
 
