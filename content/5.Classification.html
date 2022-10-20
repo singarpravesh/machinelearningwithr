@@ -499,6 +499,81 @@
 </section>
 <section class="slide level2">
 
+<ul>
+<li>The relationship between the variables are plotted below:</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>diabetes <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(glucose, insulin))<span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col =</span> class))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img data-src="5.Classification_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>diabetes <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(sspg, insulin))<span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col =</span> class))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img data-src="5.Classification_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>diabetes <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(sspg, glucose))<span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col =</span> class))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img data-src="5.Classification_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p><strong>Exercise 1</strong></p>
+<p>Reproduce the plot of glucose versus insulin, but use shapes rather than colors to indicate which class each case belongs to. Once you’ve done this, modify your code to represent the classes using shape and color.</p>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>From the data (scatter plots too) we can see that there are differences in the continuous variables among the three classes.</li>
+<li>So let’s build a kNN classifier that can <strong>predict diabetes status from measurements of future patients</strong>.</li>
+<li>It is important to <strong>scale</strong> the predictor variables by dividing them by their standard deviation.
+<ul>
+<li>This preserves the relationship between the variables.</li>
+<li>This ensures that variables measured on larger scales are not given more importance by the algorithm.</li>
+</ul></li>
+<li>In our case, the <code>mlr</code> package can take care of the <strong>scaling</strong> of the varaibles as it is in the algorithm.</li>
+</ul>
+</section>
+<section id="using-mlr-to-train-the-knn-model" class="slide level2">
+<h2>Using <code>mlr</code> to train the kNN model</h2>
+<ul>
+<li>The three stages in <code>mlr</code> package:
+<ol type="1">
+<li><strong>Define the task</strong>: Classify the data with the <code>class</code> variable as the target variable.</li>
+<li><strong>Define the learner</strong>: The learner is the name of the algorithm that we want to use.</li>
+<li><strong>Train the model</strong>: After the learner generates the model, use it to make future predictions.</li>
+</ol></li>
+</ul>
+</section>
+<section id="defining-the-task." class="slide level2">
+<h2>1. Defining the task.</h2>
+<ul>
+<li>The components needed to define a task are:
+<ul>
+<li>Data containing the predictor variables</li>
+<li>The target variable we want to predict.</li>
+</ul></li>
+</ul>
 <div class="footer footer-default">
 
 </div>

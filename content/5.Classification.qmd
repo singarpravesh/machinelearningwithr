@@ -87,4 +87,52 @@ data(diabetes, package = 'mclust')
 
 ---
 
+- The relationship between the variables are plotted below:
 
+
+```{r}
+diabetes %>% 
+  ggplot(aes(glucose, insulin))+
+  geom_point(aes(col = class))
+```
+
+
+```{r}
+diabetes %>% 
+  ggplot(aes(sspg, insulin))+
+  geom_point(aes(col = class))
+```
+
+```{r}
+diabetes %>% 
+  ggplot(aes(sspg, glucose))+
+  geom_point(aes(col = class))
+```
+
+---
+
+**Exercise 1**
+
+Reproduce the plot of glucose versus insulin, but use shapes rather than colors to indicate which class each case belongs to. Once you’ve done this, modify your code to represent the classes using shape and color.
+
+---
+
+- From the data (scatter plots too) we can see that there are differences in the continuous variables among the three classes.
+- So let's build a kNN classifier that can **predict diabetes status from measurements of future patients**.
+- It is important to **scale** the predictor variables by dividing them by their standard deviation. 
+  - This preserves the relationship between the variables.
+  - This ensures that variables measured on larger scales are not given more importance by the algorithm.
+- In our case, the `mlr` package can take care of the **scaling** of the varaibles as it is in the algorithm.
+
+
+## Using `mlr` to train the kNN model
+- The three stages in `mlr` package:
+  1. **Define the task**: Classify the data with the `class` variable as the target variable.
+  2. **Define the learner**: The learner is the name of the algorithm that we want to use.
+  3. **Train the model**: After the learner generates the model, use it to make future predictions.
+  
+## 1. Defining the task.
+
+- The components needed to define a task are:
+  - Data containing the predictor variables
+  - The target variable we want to predict.
