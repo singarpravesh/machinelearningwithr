@@ -136,3 +136,15 @@ Reproduce the plot of glucose versus insulin, but use shapes rather than colors 
 - The components needed to define a task are:
   - Data containing the predictor variables
   - The target variable we want to predict.
+- In case of supervised learning the target variable will be categorical if we have a classification problem, and continuous if we have a regression problem.
+- In case of unsupervised learning we omit the target variable from our task definition.
+
+---
+
+- To define a classification task, we use the `makeClassifTask()` function.
+
+```{r}
+library(mlr)
+makeClassifTask(data = diabetes, target = "class")
+```
+
