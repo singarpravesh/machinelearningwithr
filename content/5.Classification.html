@@ -487,7 +487,8 @@
  8 Normal      85     301   186
  9 Normal      97     379   142
 10 Normal      97     296   131
-# … with 135 more rows</code></pre>
+# … with 135 more rows
+# ℹ Use `print(n = ...)` to see more rows</code></pre>
 </div>
 </div>
 <ul>
@@ -573,6 +574,137 @@
 <li>Data containing the predictor variables</li>
 <li>The target variable we want to predict.</li>
 </ul></li>
+<li>In case of supervised learning the target variable will be categorical if we have a classification problem, and continuous if we have a regression problem.</li>
+<li>In case of unsupervised learning we omit the target variable from our task definition.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>To define a classification task, we use the <code>makeClassifTask()</code> function.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(mlr)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">makeClassifTask</span>(<span class="at">data =</span> diabetes, <span class="at">target =</span> <span class="st">"class"</span>) <span class="ot">-&gt;</span> diabetesTask</span>
+<span id="cb6-3"><a href="#cb6-3"></a>diabetesTask</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Supervised task: diabetes
+Type: classif
+Target: class
+Observations: 145
+Features:
+   numerics     factors     ordered functionals 
+          3           0           0           0 
+Missings: FALSE
+Has weights: FALSE
+Has blocking: FALSE
+Has coordinates: FALSE
+Classes: 3
+Chemical   Normal    Overt 
+      36       76       33 
+Positive class: NA</code></pre>
+</div>
+</div>
+</section>
+<section id="defining-the-learner." class="slide level2">
+<h2>2. Defining the learner.</h2>
+<ul>
+<li>The following components are required to define a learner
+<ol type="1">
+<li>The class of algorithm we are using</li>
+</ol>
+<ul>
+<li><em>classif</em> for classification</li>
+<li><em>regr</em> for regression</li>
+<li><em>cluster</em> for clustering</li>
+</ul>
+<ol start="2" type="1">
+<li>The algorithm we are using.</li>
+</ol></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>In the <code>diabetes</code> data example we shall use</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">makeLearner</span>(<span class="st">"classif.knn"</span>, <span class="at">par.vals =</span> <span class="fu">list</span>(<span class="st">"k"</span> <span class="ot">=</span> <span class="dv">2</span>))<span class="ot">-&gt;</span> knn</span>
+<span id="cb8-2"><a href="#cb8-2"></a>knn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Learner classif.knn from package class
+Type: classif
+Name: k-Nearest Neighbor; Short name: knn
+Class: classif.knn
+Properties: twoclass,multiclass,numerics
+Predict-Type: response
+Hyperparameters: k=2</code></pre>
+</div>
+</div>
+</section>
+<section id="training-the-model" class="slide level2">
+<h2>3. Training the model</h2>
+<ul>
+<li>We use the <code>train()</code> function to train our model</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>(<span class="fu">train</span>(<span class="at">learner =</span> knn, <span class="at">task =</span> diabetesTask) <span class="ot">-&gt;</span> knnModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model for learner.id=classif.knn; learner.class=classif.knn
+Trained on: task.id = diabetes; obs = 145; features = 3
+Hyperparameters: k=2</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Now that we have our model, let’s pass the data through it and see how it performs.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>(<span class="fu">predict</span>(knnModel, <span class="at">newdata =</span> diabetes)<span class="ot">-&gt;</span> knnPred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Prediction: 145 observations
+predict.type: response
+threshold: 
+time: 0.00
+   truth response
+1 Normal   Normal
+2 Normal   Normal
+3 Normal   Normal
+4 Normal   Normal
+5 Normal   Normal
+6 Normal   Normal
+... (#rows: 145, #cols: 2)</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>In order to assess the performance of our model we shall use the <code>performance()</code> function.</li>
+<li>We also specify the <em>performance metrics</em> by supplying them as a list to the <strong>measures</strong> argument.</li>
+<li>The two measures are
+<ul>
+<li><code>mmce</code> the mean misclassification error, which is the proportion of cases classified as a case other than their true class.</li>
+<li><code>acc</code> the accuracy, i.e.&nbsp;the proportion of cases that were correctly classified by the model.</li>
+<li><code>mmce</code> and <code>acc</code> sum to 1.</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">performance</span>(<span class="at">pred =</span> knnPred, <span class="at">measures =</span> <span class="fu">list</span>(mmce, acc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      mmce        acc 
+0.06206897 0.93793103 </code></pre>
+</div>
+</div>
+<ul>
+<li>We can see that the model is correctly classifying 93.79 percentage of cases.</li>
+<li>However, we are not sure about the model performance on <strong>unseen</strong> data.</li>
+<li>Therefore, model performance should not be assessed in this way.</li>
 </ul>
 <div class="footer footer-default">
 

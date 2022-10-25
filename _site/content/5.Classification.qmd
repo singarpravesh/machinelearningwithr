@@ -136,3 +136,69 @@ Reproduce the plot of glucose versus insulin, but use shapes rather than colors 
 - The components needed to define a task are:
   - Data containing the predictor variables
   - The target variable we want to predict.
+- In case of supervised learning the target variable will be categorical if we have a classification problem, and continuous if we have a regression problem.
+- In case of unsupervised learning we omit the target variable from our task definition.
+
+---
+
+- To define a classification task, we use the `makeClassifTask()` function.
+
+```{r}
+#| code-fold: false
+library(mlr)
+makeClassifTask(data = diabetes, target = "class") -> diabetesTask
+diabetesTask
+```
+
+## 2. Defining the learner.
+- The following components are required to define a learner
+  1. The class of algorithm we are using
+    - *classif* for classification
+    - *regr* for regression
+    - *cluster* for clustering 
+  2. The algorithm we are using.
+
+---
+
+- In the `diabetes` data example we shall use
+
+```{r}
+#| code-fold: false
+makeLearner("classif.knn", par.vals = list("k" = 2))-> knn
+knn
+```
+
+## 3. Training the model
+- We use the `train()` function to train our model
+```{r}
+#| code-fold: false
+(train(learner = knn, task = diabetesTask) -> knnModel)
+```
+
+---
+
+- Now that we have our model, let's pass the data through it and see how it performs.
+```{r}
+#| code-fold: false
+(predict(knnModel, newdata = diabetes)-> knnPred)
+```
+
+---
+
+- In order to assess the performance of our model we shall use the `performance()` function.
+- We also specify the *performance metrics* by supplying them as a list to the **measures** argument.
+- The two measures are 
+  - `mmce` the mean misclassification error, which is the proportion of cases classified as a case other than their true class.
+  - `acc` the accuracy, i.e. the proportion of cases that were correctly classified by the model.
+  - `mmce` and `acc` sum to 1.
+
+---
+
+```{r}
+#| code-fold: false
+performance(pred = knnPred, measures = list(mmce, acc))
+```
+
+- We can see that the model is correctly classifying `r round(performance(pred = knnPred, measures = list(mmce, acc))[[2]]*100, 2)` percentage of cases.
+- However, we are not sure about the model performance on **unseen** data.
+- Therefore, model performance should not be assessed in this way.
