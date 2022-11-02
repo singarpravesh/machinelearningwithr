@@ -487,8 +487,7 @@
  8 Normal      85     301   186
  9 Normal      97     379   142
 10 Normal      97     296   131
-# … with 135 more rows
-# ℹ Use `print(n = ...)` to see more rows</code></pre>
+# … with 135 more rows</code></pre>
 </div>
 </div>
 <ul>
@@ -667,7 +666,7 @@ Hyperparameters: k=2</code></pre>
 <pre><code>Prediction: 145 observations
 predict.type: response
 threshold: 
-time: 0.00
+time: 0.05
    truth response
 1 Normal   Normal
 2 Normal   Normal
@@ -698,14 +697,45 @@ time: 0.00
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">performance</span>(<span class="at">pred =</span> knnPred, <span class="at">measures =</span> <span class="fu">list</span>(mmce, acc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      mmce        acc 
-0.06206897 0.93793103 </code></pre>
+0.03448276 0.96551724 </code></pre>
 </div>
 </div>
 <ul>
-<li>We can see that the model is correctly classifying 93.79 percentage of cases.</li>
+<li>We can see that the model is correctly classifying 96.55 percentage of cases.</li>
 <li>However, we are not sure about the model performance on <strong>unseen</strong> data.</li>
 <li>Therefore, model performance should not be assessed in this way.</li>
 </ul>
+</section>
+<section id="balancing-two-sources-of-model-error-the-bias-variance-tradeoff." class="slide level2">
+<h2>Balancing two sources of model error: the bias-variance tradeoff.</h2>
+<ul>
+<li><em>Underfitting</em> and <em>overfitting</em> are two important sources of errors in model building.</li>
+<li>In case of <em>underfitting</em>, we may have included few predictors or too simple a model to adequately describe the relationships/patterns in data.</li>
+<li>The fitted model is <em>biased</em>, i.e.&nbsp;a mmodel that performs poorly on the data we use to train it and on new data.</li>
+<li><em>Because we typically like to explain away as much variation in our data as possible, and because we often have many more variables than are important for our problem, underfitting is less frequently a problem than overfitting</em>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>In case of <em>overfitting</em> we may include too many predictors or too complex a model.</li>
+<li>Here, we usually model the <em>noise</em> along with the patterns/relationships in the data.</li>
+<li><em>Noise</em> in a dataset is variation that is not systematically related to variables we have measured, but rather is due to inherent variability and/or error in measurement of our variables.</li>
+<li>If we model the <em>noise</em>, our model may perform very well on the training data but not on new data.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<div class="columns">
+<div class="column">
+<ul>
+<li>Underfitting and overfitting both introduce error and reduce the <strong>generalizability</strong> of the model: <em>the ability of the model to generalize to future, unseen data</em>.</li>
+<li>They are also opposed to each other: somewhere between a model that underfits and has bias, and a model that overfits and has variance, is an optimal model that balances the bias-variance trade-off.</li>
+</ul>
+</div><div class="column">
+<p><img data-src="5.Classification_files/fig3.10.PNG"></p>
+</div>
+</div>
 <div class="footer footer-default">
 
 </div>
