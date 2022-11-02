@@ -6,6 +6,7 @@ format:
     code-fold: true
     echo: true
     eval: true
+    slide-number: c/t
 editor_options: 
   chunk_output_type: console
 ---
@@ -222,8 +223,118 @@ performance(pred = knnPred, measures = list(mmce, acc))
 - Underfitting and overfitting both introduce error and reduce the **generalizability** of the model: *the ability of the model to generalize to future, unseen data*. 
 - They are also opposed to each other: somewhere between a model that underfits and has bias, and a model that overfits and has variance, is an optimal model that balances the bias-variance trade-off.
 
-![](5.Classification_files/fig3.10.PNG)
+---
+
+![The Bias-Variance Tradeoff](5.Classification_files/fig3.10.PNG)
+
+---
+
+- So how do I tell if I am overfitting or underfitting?
+- The answer is a technique called ***cross-validation***.
+- As mentioned before, one should never evaluate the performance of a model by using the *seen* data. 
+  - The model could be extremely overfit (modelling all the noise in the data) but still have good predictive accuracy. 
+  
+---
+
+- The *cross-validation* process:
+  - Split the data into a *training* set and a *testing* set.
+  - Train the model using the *training* set and use the *testing* set to test it.
+  - The closeness of the predictions are summarised with *performace metrices*.
+  
+---
+
+- Once the model is cross-validated, we can use all the data (including the test set) to train the final model. This is because the more the data we train our model with, the less bias will it have.
+- There are three common cross-validation approaches:
+  1. Holdout cross-validation
+  2. K-fold cross-validation
+  3. Leave-one-out cross-validation
+
+## 1. Holdout cross-validation
+
+![](5.Classification_files/fig3.12.PNG)
+
+- A commonly used split is to use two-thirds of the data for trainig and the remaining for testing.
+
+---
+
+**Making a holdout resampling description**
+
+- Make a resampling description i.e.  a set of instructions how the data will be split into training and testing sets.
+
+```{r}
+#| code-fold: false
+library(mlr)
+makeResampleDesc(method = "Holdout", split = 2/3, stratify = TRUE)-> holdout
+```
+
+- The optional argument `stratify = TRUE` ensures that the proportion of each class of patient in each set is maintained. 
+- This is important in classification problems like ours, where the groups are very unbalanced (we have more healthy patients than both other groups combined) because, otherwise, we could get a test set with very few of one of our smaller classes.
+
+---
+
+**Performing Holdout cross-validation**
+
+- We can run the *Holdout CV* using the `resample()` function.
+```{r}
+#| code-fold: false
+resample(learner = knn,
+         task = diabetesTask,
+         resampling = holdout,
+         measures = list(mmce, acc)) -> holdoutCV
+holdoutCV
+```
+
+- The *mean misclassification error* and the *accuracy* values are `r holdoutCV$aggr` respectively.
+
+---
+
+- We can notice two things here:
+  1. The accuracy of the model as estimated by the **Holdout CV** is less than when we evaluated its performance on the data we used to train the full model. This exemplifies the point earlier that models will perform better on the data
+that trained them than on unseen data.
+
+**Misclassification error `mmce` and the accuracy `acc` values:**
 
 
+::::{.columns}
+
+:::{.column}
+**Holdout CV**
+
+`r holdoutCV$aggr`
+:::
+
+:::{.column}
+**Performance of the full model**
+
+`r performance(pred = knnPred, measures = list(mmce, acc))`
+:::
+
+::::
+
+
+
+---
+
+- We can notice two things here:
+  2. Your performance metrics will probably be different than mine. In fact, run the `resample()` function over and over again, and you’ll get a very different result each time! The reason for this variance is that the data is randomly split into the test and training sets. Sometimes the split is such that the model performs well on the test set; sometimes the split is such that it performs poorly.
+  
+## Exercise 2
+
+Use the `makeResampleDesc()` function to create another holdout resampling description that uses 10% of the data as the test set and does not use stratified sampling (don’t overwrite your existing resampling description).
+
+---
+
+**Calculating a confusion matrix**
+
+- A *confusion matrix* is a tabular representation of the true and predicted class of each case in the test set.
+- This gives a better idea of which groups are being correctly classified and which are being misclassified.
+- In `mlr` package we can calculate the confusion matrix using the `calculateConfusionMatrix()` function.
+
+---
+
+```{r}
+#| code-fold: false
+calculateConfusionMatrix(pred = holdoutCV$pred, relative = TRUE)
+```
 
 

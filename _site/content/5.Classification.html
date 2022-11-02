@@ -666,7 +666,7 @@ Hyperparameters: k=2</code></pre>
 <pre><code>Prediction: 145 observations
 predict.type: response
 threshold: 
-time: 0.11
+time: 0.00
    truth response
 1 Normal   Normal
 2 Normal   Normal
@@ -697,11 +697,11 @@ time: 0.11
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">performance</span>(<span class="at">pred =</span> knnPred, <span class="at">measures =</span> <span class="fu">list</span>(mmce, acc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      mmce        acc 
-0.04827586 0.95172414 </code></pre>
+0.06896552 0.93103448 </code></pre>
 </div>
 </div>
 <ul>
-<li>We can see that the model is correctly classifying 95.17 percentage of cases.</li>
+<li>We can see that the model is correctly classifying 93.1 percentage of cases.</li>
 <li>However, we are not sure about the model performance on <strong>unseen</strong> data.</li>
 <li>Therefore, model performance should not be assessed in this way.</li>
 </ul>
@@ -730,8 +730,156 @@ time: 0.11
 <li>Underfitting and overfitting both introduce error and reduce the <strong>generalizability</strong> of the model: <em>the ability of the model to generalize to future, unseen data</em>.</li>
 <li>They are also opposed to each other: somewhere between a model that underfits and has bias, and a model that overfits and has variance, is an optimal model that balances the bias-variance trade-off.</li>
 </ul>
+</section>
+<section class="slide level2">
 
-<img data-src="5.Classification_files/fig3.10.PNG" class="r-stretch"><div class="footer footer-default">
+
+<img data-src="5.Classification_files/fig3.10.PNG" class="r-stretch quarto-figure-center"><p class="caption">The Bias-Variance Tradeoff</p></section>
+<section class="slide level2">
+
+<ul>
+<li>So how do I tell if I am overfitting or underfitting?</li>
+<li>The answer is a technique called <strong><em>cross-validation</em></strong>.</li>
+<li>As mentioned before, one should never evaluate the performance of a model by using the <em>seen</em> data.
+<ul>
+<li>The model could be extremely overfit (modelling all the noise in the data) but still have good predictive accuracy.</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>The <em>cross-validation</em> process:
+<ul>
+<li>Split the data into a <em>training</em> set and a <em>testing</em> set.</li>
+<li>Train the model using the <em>training</em> set and use the <em>testing</em> set to test it.</li>
+<li>The closeness of the predictions are summarised with <em>performace metrices</em>.</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Once the model is cross-validated, we can use all the data (including the test set) to train the final model. This is because the more the data we train our model with, the less bias will it have.</li>
+<li>There are three common cross-validation approaches:
+<ol type="1">
+<li>Holdout cross-validation</li>
+<li>K-fold cross-validation</li>
+<li>Leave-one-out cross-validation</li>
+</ol></li>
+</ul>
+</section>
+<section id="holdout-cross-validation" class="slide level2">
+<h2>1. Holdout cross-validation</h2>
+
+<img data-src="5.Classification_files/fig3.12.PNG" class="r-stretch"><ul>
+<li>A commonly used split is to use two-thirds of the data for trainig and the remaining for testing.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><strong>Making a holdout resampling description</strong></p>
+<ul>
+<li>Make a resampling description i.e.&nbsp;a set of instructions how the data will be split into training and testing sets.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">library</span>(mlr)</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">makeResampleDesc</span>(<span class="at">method =</span> <span class="st">"Holdout"</span>, <span class="at">split =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">stratify =</span> <span class="cn">TRUE</span>)<span class="ot">-&gt;</span> holdout</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>The optional argument <code>stratify = TRUE</code> ensures that the proportion of each class of patient in each set is maintained.</li>
+<li>This is important in classification problems like ours, where the groups are very unbalanced (we have more healthy patients than both other groups combined) because, otherwise, we could get a test set with very few of one of our smaller classes.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><strong>Performing Holdout cross-validation</strong></p>
+<ul>
+<li>We can run the <em>Holdout CV</em> using the <code>resample()</code> function.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">resample</span>(<span class="at">learner =</span> knn,</span>
+<span id="cb17-2"><a href="#cb17-2"></a>         <span class="at">task =</span> diabetesTask,</span>
+<span id="cb17-3"><a href="#cb17-3"></a>         <span class="at">resampling =</span> holdout,</span>
+<span id="cb17-4"><a href="#cb17-4"></a>         <span class="at">measures =</span> <span class="fu">list</span>(mmce, acc)) <span class="ot">-&gt;</span> holdoutCV</span>
+<span id="cb17-5"><a href="#cb17-5"></a>holdoutCV</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Resample Result
+Task: diabetes
+Learner: classif.knn
+Aggr perf: mmce.test.mean=0.2040816,acc.test.mean=0.7959184
+Runtime: 0.011364</code></pre>
+</div>
+</div>
+<ul>
+<li>The <em>mean misclassification error</em> and the <em>accuracy</em> values are 0.2040816, 0.7959184 respectively.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>We can notice two things here:
+<ol type="1">
+<li>The accuracy of the model as estimated by the <strong>Holdout CV</strong> is less than when we evaluated its performance on the data we used to train the full model. This exemplifies the point earlier that models will perform better on the data that trained them than on unseen data.</li>
+</ol></li>
+</ul>
+<p><strong>Misclassification error <code>mmce</code> and the accuracy <code>acc</code> values:</strong></p>
+<div class="columns">
+<div class="column">
+<p><strong>Holdout CV</strong></p>
+<p>0.2040816, 0.7959184</p>
+</div><div class="column">
+<p><strong>Performance of the full model</strong></p>
+<p>0.0689655, 0.9310345</p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>We can notice two things here:
+<ol start="2" type="1">
+<li>Your performance metrics will probably be different than mine. In fact, run the <code>resample()</code> function over and over again, and you’ll get a very different result each time! The reason for this variance is that the data is randomly split into the test and training sets. Sometimes the split is such that the model performs well on the test set; sometimes the split is such that it performs poorly.</li>
+</ol></li>
+</ul>
+</section>
+<section id="exercise-2" class="slide level2">
+<h2>Exercise 2</h2>
+<p>Use the <code>makeResampleDesc()</code> function to create another holdout resampling description that uses 10% of the data as the test set and does not use stratified sampling (don’t overwrite your existing resampling description).</p>
+</section>
+<section class="slide level2">
+
+<p><strong>Calculating a confusion matrix</strong></p>
+<ul>
+<li>A <em>confusion matrix</em> is a tabular representation of the true and predicted class of each case in the test set.</li>
+<li>This gives a better idea of which groups are being correctly classified and which are being misclassified.</li>
+<li>In <code>mlr</code> package we can calculate the confusion matrix using the <code>calculateConfusionMatrix()</code> function.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">calculateConfusionMatrix</span>(<span class="at">pred =</span> holdoutCV<span class="sc">$</span>pred, <span class="at">relative =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Relative confusion matrix (normalized by row/column):
+          predicted
+true       Chemical  Normal    Overt     -err.-   
+  Chemical 0.50/0.60 0.17/0.07 0.33/0.33 0.50     
+  Normal   0.04/0.10 0.96/0.93 0.00/0.00 0.04     
+  Overt    0.27/0.30 0.00/0.00 0.73/0.67 0.27     
+  -err.-        0.40      0.07      0.33 0.20     
+
+
+Absolute confusion matrix:
+          predicted
+true       Chemical Normal Overt -err.-
+  Chemical        6      2     4      6
+  Normal          1     25     0      1
+  Overt           3      0     8      3
+  -err.-          4      2     4     10</code></pre>
+</div>
+</div>
+<div class="footer footer-default">
 
 </div>
 </section>
@@ -787,7 +935,7 @@ time: 0.11
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
