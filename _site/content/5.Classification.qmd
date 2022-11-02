@@ -202,3 +202,28 @@ performance(pred = knnPred, measures = list(mmce, acc))
 - We can see that the model is correctly classifying `r round(performance(pred = knnPred, measures = list(mmce, acc))[[2]]*100, 2)` percentage of cases.
 - However, we are not sure about the model performance on **unseen** data.
 - Therefore, model performance should not be assessed in this way.
+
+## Balancing two sources of model error: the bias-variance tradeoff.
+
+- *Underfitting* and *overfitting* are two important sources of errors in model building.
+- In case of *underfitting*, we may have included few predictors or too simple a model to adequately describe the relationships/patterns in data.
+- The fitted model is *biased*, i.e. a mmodel that performs poorly on the data we use to train it and on new data.
+- *Because we typically like to explain away as much variation in our data as possible, and because we often have many more variables than are important for our problem, underfitting is less frequently a problem than overfitting*.
+
+---
+
+- In case of *overfitting* we may include too many predictors or too complex a model.
+- Here, we usually model the *noise* along with the patterns/relationships in the data.
+- *Noise* in a dataset is variation that is not systematically related to variables we have measured, but rather is due to inherent variability and/or error in measurement of our variables.
+- If we model the *noise*, our model may perform very well on the training data but not on new data.
+
+---
+
+- Underfitting and overfitting both introduce error and reduce the **generalizability** of the model: *the ability of the model to generalize to future, unseen data*. 
+- They are also opposed to each other: somewhere between a model that underfits and has bias, and a model that overfits and has variance, is an optimal model that balances the bias-variance trade-off.
+
+![](5.Classification_files/fig3.10.PNG)
+
+
+
+

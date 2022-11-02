@@ -666,7 +666,7 @@ Hyperparameters: k=2</code></pre>
 <pre><code>Prediction: 145 observations
 predict.type: response
 threshold: 
-time: 0.05
+time: 0.11
    truth response
 1 Normal   Normal
 2 Normal   Normal
@@ -697,11 +697,11 @@ time: 0.05
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">performance</span>(<span class="at">pred =</span> knnPred, <span class="at">measures =</span> <span class="fu">list</span>(mmce, acc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      mmce        acc 
-0.03448276 0.96551724 </code></pre>
+0.04827586 0.95172414 </code></pre>
 </div>
 </div>
 <ul>
-<li>We can see that the model is correctly classifying 96.55 percentage of cases.</li>
+<li>We can see that the model is correctly classifying 95.17 percentage of cases.</li>
 <li>However, we are not sure about the model performance on <strong>unseen</strong> data.</li>
 <li>Therefore, model performance should not be assessed in this way.</li>
 </ul>
@@ -726,17 +726,12 @@ time: 0.05
 </section>
 <section class="slide level2">
 
-<div class="columns">
-<div class="column">
 <ul>
 <li>Underfitting and overfitting both introduce error and reduce the <strong>generalizability</strong> of the model: <em>the ability of the model to generalize to future, unseen data</em>.</li>
 <li>They are also opposed to each other: somewhere between a model that underfits and has bias, and a model that overfits and has variance, is an optimal model that balances the bias-variance trade-off.</li>
 </ul>
-</div><div class="column">
-<p><img data-src="5.Classification_files/fig3.10.PNG"></p>
-</div>
-</div>
-<div class="footer footer-default">
+
+<img data-src="5.Classification_files/fig3.10.PNG" class="r-stretch"><div class="footer footer-default">
 
 </div>
 </section>

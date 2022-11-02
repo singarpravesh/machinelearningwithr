@@ -219,18 +219,11 @@ performance(pred = knnPred, measures = list(mmce, acc))
 
 ---
 
-::::{.columns}
-
-:::{.column}
 - Underfitting and overfitting both introduce error and reduce the **generalizability** of the model: *the ability of the model to generalize to future, unseen data*. 
 - They are also opposed to each other: somewhere between a model that underfits and has bias, and a model that overfits and has variance, is an optimal model that balances the bias-variance trade-off.
-:::
 
-:::{.column}
 ![](5.Classification_files/fig3.10.PNG)
-:::
 
-::::
 
 
 
