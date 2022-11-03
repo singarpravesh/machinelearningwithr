@@ -5,6 +5,7 @@ format:
   revealjs:
     scrollable: true
     smaller: true
+    slide-number: c/t
 execute: 
   echo: true
 editor_options: 
