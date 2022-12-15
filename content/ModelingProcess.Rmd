@@ -181,6 +181,11 @@ test_strata$Attrition %>% table() %>% prop.table()
     
   
 ## Creating models in R
+- The R ecosystem provides a variety of ML algorithm implementations.
+- There are almost always more than one package to perform each algorithm (for e.g. there are over 20 packages for fitting random forests).
+- There are pros and cons to this wide selection
+  - Some may be efficient while some may be more flexible (i.e. have more hyperparameter tuning options).
+  
 
 # Resampling methods
 
@@ -238,7 +243,16 @@ test_strata$Attrition %>% table() %>% prop.table()
   - less variability in the error measure compared with *k*-fold CV
   - Increase the bias of the error estimate.
   - Not an issue with data sets ($n \geq 1000$).
-  
+
+# Bias variance trade-off 
+
+---
+
+- Prediction errors can be decomposed into two important subcomponents: error due to “bias” and error due to “variance”. 
+- There is often a tradeoff between a model’s ability to minimize bias and variance.
+- Understanding how different sources of error lead to bias and variance helps us improve the data fitting process resulting in more accurate models.
+
+
 ## Bias
 - Difference between the expected/average prediction and the correct value which we are trying to predict is known as the **bias**.
 - If a model has a high bias, it will have consistency in its resampling performance as illustrated in the figure (right).
@@ -252,5 +266,8 @@ test_strata$Attrition %>% table() %>% prop.table()
 
 ---
 
-- Since high variance models are more prone to overfitting, using resampling procedures are critical to reduce this risk. - Overfitting: Although you may achieve very good performance on your training data, the model will not automatically generalize well to unseen data.
+- Since high variance models are more prone to overfitting, using resampling procedures are critical to reduce this risk. 
+- Overfitting: Although you may achieve very good performance on your training data, the model will not automatically generalize well to unseen data.
+- Moreover, many algorithms that are capable of achieving high generalization performance have lots of hyperparameters that control the level of model complexity (i.e. the tradeoff between bias and variance).
+
 

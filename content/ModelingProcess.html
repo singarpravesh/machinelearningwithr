@@ -3456,6 +3456,16 @@ Down-sampling
 
 </article></slide><slide class=""><hgroup><h2>Creating models in R</h2></hgroup><article  id="creating-models-in-r" class="smaller ">
 
+<ul>
+<li>The R ecosystem provides a variety of ML algorithm implementations.</li>
+<li>There are almost always more than one package to perform each algorithm (for e.g. there are over 20 packages for fitting random forests).</li>
+<li>There are pros and cons to this wide selection
+
+<ul>
+<li>Some may be efficient while some may be more flexible (i.e. have more hyperparameter tuning options).</li>
+</ul></li>
+</ul>
+
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Resampling methods</h2></hgroup><article  id="resampling-methods" class="smaller ">
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
@@ -3538,6 +3548,16 @@ Down-sampling
 </ul></li>
 </ul>
 
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Bias variance trade-off</h2></hgroup><article  id="bias-variance-trade-off" class="smaller ">
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
+
+<ul>
+<li>Prediction errors can be decomposed into two important subcomponents: error due to &ldquo;bias&rdquo; and error due to &ldquo;variance&rdquo;.</li>
+<li>There is often a tradeoff between a model’s ability to minimize bias and variance.</li>
+<li>Understanding how different sources of error lead to bias and variance helps us improve the data fitting process resulting in more accurate models.</li>
+</ul>
+
 </article></slide><slide class=""><hgroup><h2>Bias</h2></hgroup><article  id="bias" class="smaller ">
 
 <ul>
@@ -3556,7 +3576,9 @@ Down-sampling
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller">
 
 <ul>
-<li>Since high variance models are more prone to overfitting, using resampling procedures are critical to reduce this risk. - Overfitting: Although you may achieve very good performance on your training data, the model will not automatically generalize well to unseen data.</li>
+<li>Since high variance models are more prone to overfitting, using resampling procedures are critical to reduce this risk.</li>
+<li>Overfitting: Although you may achieve very good performance on your training data, the model will not automatically generalize well to unseen data.</li>
+<li>Moreover, many algorithms that are capable of achieving high generalization performance have lots of hyperparameters that control the level of model complexity (i.e. the tradeoff between bias and variance).</li>
 </ul></article></slide>
 
 
