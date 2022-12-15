@@ -32,6 +32,37 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 - [Hands-On Machine Learning with R](https://bradleyboehmke.github.io/HOML/) by Bradley Boehmke & Brandon Greenwell
 
 
+## Introduction
+
+- The ML process is iterative and heuristic based approach, just like EDA.
+- Without the knowledge about the data or the problem at hand it is really difficult to ascertain which ML will perform the best. This is known as the *no free lunch* theorem for ML.
+- ML approaches need to be applied, evaluated, and modified before a final model is determined.
+- Approaching ML modelling correctly means
+  - Spending our data wisely on *learning and validation*
+  - Properly *pre-processing* the feature and the target variables,
+  - Minimizing *data leakage*
+  - Tuning *hyperparameters*, and 
+  - Assessing model performance
+
+---
+
+![](modellingProcess/fig2.1.png){width=90%}
+
+## What are *hyperparameters* in ML?
+- Hyperparameters are the parameters that are explicitly defined by the user to control the learning process.
+- The value(s) of the hyperparameter are set by the ML engineer before the learning algorithm begins training the model.
+- These values are external and cannot be changed during the trainig process.
+- Some examples of hyperparameters
+  - the *k* in kNN
+  - Train-test split ratio
+  - branches in decision tree
+  - number of clusters in clustering algorithm
+  
+## Difference between a *hyperparameter* and a *model parameter*.
+- Model parameters are internal to the model, and a model learns them on its own.
+- Example: coefficients of independent variables in Linear Regression Model.
+
+
 ## Data sets
 ```{r}
 library(tidyverse)
@@ -63,6 +94,7 @@ ames <- AmesHousing::make_ames()
 ```{r, message=FALSE, warning=FALSE}
 ## install.packages("modeldata")
 data(attrition, package = "modeldata")
+attrition <- as_tibble(attrition)
 ```
 
 
