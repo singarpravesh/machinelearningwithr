@@ -1,0 +1,29 @@
+---
+title: "K-Nearest Neighbours"
+format: 
+  html:
+    toc: true
+---
+
+
+
+## Introduction
+- A simple algorithm in which each observation is predicted based on "its similarity" to other observations.
+- KNN is a *memory-based* algorithm. *The training samples are required at run-time and predictions are made directly from sample relationships.* 
+  - Memory based algorithm is a type of non-parametric algorithm.
+  - These algorithms search for the training data that are most similar to the test data and make predictions based on similarities.
+  - Memory based algorithms are mostly used for *supervised learning* only.
+  - These algorithms are computationally costly, especially if the training set is too large, as the storage of the entire data set is required.
+  - In case of a *model-based* learning algorithm, after building the model to predict the targets, the training set are discarded, so there is no need to store them. 
+- KNNs are also known as *lazy learners* and can be computationally inefficient.
+  - Lazy learner algorithms simply store the data and *generalizing beyond this data* is postponed until an explicit request is made.
+  - In contrast, the *eager-learning* algorithms construct general, explicit description of the target function based on the provided training examples.
+  
+## Measuring similarity
+- KNN algorithm identifies *K* observations that are similar or nearest to the new record being predicted.
+- Then it used the *average response value* (regression) or the *most common class* (classification) of those *K* observations as the predicted output.
+- For example consider the Ames housing data.
+  - In real estate, the realtors list the price of a house based on the similar characteristics (e.g. area, number of rooms, location, etc.) of other homes.
+  - This is what the KNN algorithm will do.
+  
+![The 10 nearest neighbors (blue) whose home attributes most closely resemble the house of interest (red).](https://bradleyboehmke.github.io/HOML/06c-knn_files/figure-html/map-homes-1.png)
