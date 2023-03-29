@@ -3,6 +3,8 @@ title: "K-Nearest Neighbours"
 format: 
   html:
     toc: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -21,7 +23,7 @@ format:
   
 ## Measuring similarity
 - KNN algorithm identifies *K* observations that are similar or nearest to the new record being predicted.
-- Then it used the *average response value* (regression) or the *most common class* (classification) of those *K* observations as the predicted output.
+- Then it uses the *average response value* (regression) or the *most common class* (classification) of those *K* observations as the predicted output.
 - For example consider the Ames housing data.
   - In real estate, the realtors list the price of a house based on the similar characteristics (e.g. area, number of rooms, location, etc.) of other homes.
   - This is what the KNN algorithm will do.
@@ -33,7 +35,64 @@ format:
 - We use distance (or dissimilarity) metrics to compute the pairwise differences between observations. 
 - The most common distance measures are the *Euclidean* and *Manhattan* distance metrics; both of which measure the distance between observation $x_a$ and $x_b$ for all $j$ features.
 $$
-\text{Euclidean Distance = }\sqrt{\sum_{j=1}^P(x_{aj} - x_{bj})^2} \\\
-\text{Manhattan Distance = }\sum_{j=1}^P|x_{aj} - x_{bj}|
+\begin{align*}
+\text{Euclidean Distance} &= \sqrt{\sum_{j=1}^P(x_{aj} - x_{bj})^2} \\\
+\text{Manhattan Distance} &= \sum_{j=1}^P|x_{aj} - x_{bj}|
+\end{align*}
 $$
+- Let's calculate the two distances and plot them using the `AmesHousing` package. 
+- The data we shall use should be processed and cleaned using the `make_ames()` function. 
+
+```{r}
+library(AmesHousing)
+(ames <- make_ames())
+```
+
+- Let us compute the distances for the first two homes and two features/variables `(Gr_Liv_Area & Year_Built)` in the dataset.
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+ames %>% 
+  select(Gr_Liv_Area, Year_Built) %>% 
+  slice(1:2) -> TwoHouses
+
+TwoHouses %>% 
+  dist(method = "euclidean")
+
+TwoHouses %>% 
+  dist(method = "manhattan")
+```
+
+```{r}
+#| code-fold: true
+#| message: false
+#| warning: false
+gridExtra::grid.arrange(
+TwoHouses %>% 
+  ggplot(aes(Gr_Liv_Area, Year_Built))+
+  geom_point()+
+  geom_line(lty = "dashed")+
+  labs(title = "Euclidean Distance"),
+
+TwoHouses %>% 
+  ggplot(aes(Gr_Liv_Area, Year_Built))+
+  geom_point()+
+  geom_step(lty = "dashed")+
+  labs(title = "Manhattan Distance"),
+nrow = 1)
+```
+
+### Pre-processing
+- Data preprocessing makes up a major portion of any project involving data, and data scientists devote around 80% of their time on gathering and organising data.
+- Analyzing, filtering, manipulating, and encoding data is known as "data preprocessing," and it is done so that a machine learning algorithm can comprehend and use the processed output.
+- The Euclidean distance is more sensitive to outliers because of the squared term in the formula.
+
+
+
+
+
+
+
 
