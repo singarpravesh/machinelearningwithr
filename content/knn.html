@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.2.475">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -114,6 +114,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#distance-measures" id="toc-distance-measures" class="nav-link" data-scroll-target="#distance-measures">Distance measures</a></li>
   <li><a href="#pre-processing" id="toc-pre-processing" class="nav-link" data-scroll-target="#pre-processing">Pre-processing</a></li>
+  <li><a href="#choosing-k" id="toc-choosing-k" class="nav-link" data-scroll-target="#choosing-k">Choosing <em>k</em></a></li>
   </ul></li>
   </ul>
 </nav>
@@ -192,25 +193,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>(ames <span class="ot">&lt;-</span> <span class="fu">make_ames</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2,930 × 81
-   MS_Sub…¹ MS_Zo…² Lot_F…³ Lot_A…⁴ Street Alley Lot_S…⁵ Land_…⁶ Utili…⁷ Lot_C…⁸
-   &lt;fct&gt;    &lt;fct&gt;     &lt;dbl&gt;   &lt;int&gt; &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt;  
- 1 One_Sto… Reside…     141   31770 Pave   No_A… Slight… Lvl     AllPub  Corner 
- 2 One_Sto… Reside…      80   11622 Pave   No_A… Regular Lvl     AllPub  Inside 
- 3 One_Sto… Reside…      81   14267 Pave   No_A… Slight… Lvl     AllPub  Corner 
- 4 One_Sto… Reside…      93   11160 Pave   No_A… Regular Lvl     AllPub  Corner 
- 5 Two_Sto… Reside…      74   13830 Pave   No_A… Slight… Lvl     AllPub  Inside 
- 6 Two_Sto… Reside…      78    9978 Pave   No_A… Slight… Lvl     AllPub  Inside 
- 7 One_Sto… Reside…      41    4920 Pave   No_A… Regular Lvl     AllPub  Inside 
- 8 One_Sto… Reside…      43    5005 Pave   No_A… Slight… HLS     AllPub  Inside 
- 9 One_Sto… Reside…      39    5389 Pave   No_A… Slight… Lvl     AllPub  Inside 
-10 Two_Sto… Reside…      60    7500 Pave   No_A… Regular Lvl     AllPub  Inside 
-# … with 2,920 more rows, 71 more variables: Land_Slope &lt;fct&gt;,
-#   Neighborhood &lt;fct&gt;, Condition_1 &lt;fct&gt;, Condition_2 &lt;fct&gt;, Bldg_Type &lt;fct&gt;,
-#   House_Style &lt;fct&gt;, Overall_Qual &lt;fct&gt;, Overall_Cond &lt;fct&gt;,
+   MS_SubClass            MS_Zoning Lot_Frontage Lot_Area Street Alley Lot_Shape
+   &lt;fct&gt;                  &lt;fct&gt;            &lt;dbl&gt;    &lt;int&gt; &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;    
+ 1 One_Story_1946_and_Ne… Resident…          141    31770 Pave   No_A… Slightly…
+ 2 One_Story_1946_and_Ne… Resident…           80    11622 Pave   No_A… Regular  
+ 3 One_Story_1946_and_Ne… Resident…           81    14267 Pave   No_A… Slightly…
+ 4 One_Story_1946_and_Ne… Resident…           93    11160 Pave   No_A… Regular  
+ 5 Two_Story_1946_and_Ne… Resident…           74    13830 Pave   No_A… Slightly…
+ 6 Two_Story_1946_and_Ne… Resident…           78     9978 Pave   No_A… Slightly…
+ 7 One_Story_PUD_1946_an… Resident…           41     4920 Pave   No_A… Regular  
+ 8 One_Story_PUD_1946_an… Resident…           43     5005 Pave   No_A… Slightly…
+ 9 One_Story_PUD_1946_an… Resident…           39     5389 Pave   No_A… Slightly…
+10 Two_Story_1946_and_Ne… Resident…           60     7500 Pave   No_A… Regular  
+# ℹ 2,920 more rows
+# ℹ 74 more variables: Land_Contour &lt;fct&gt;, Utilities &lt;fct&gt;, Lot_Config &lt;fct&gt;,
+#   Land_Slope &lt;fct&gt;, Neighborhood &lt;fct&gt;, Condition_1 &lt;fct&gt;, Condition_2 &lt;fct&gt;,
+#   Bldg_Type &lt;fct&gt;, House_Style &lt;fct&gt;, Overall_Qual &lt;fct&gt;, Overall_Cond &lt;fct&gt;,
 #   Year_Built &lt;int&gt;, Year_Remod_Add &lt;int&gt;, Roof_Style &lt;fct&gt;, Roof_Matl &lt;fct&gt;,
 #   Exterior_1st &lt;fct&gt;, Exterior_2nd &lt;fct&gt;, Mas_Vnr_Type &lt;fct&gt;,
-#   Mas_Vnr_Area &lt;dbl&gt;, Exter_Qual &lt;fct&gt;, Exter_Cond &lt;fct&gt;, Foundation &lt;fct&gt;,
-#   Bsmt_Qual &lt;fct&gt;, Bsmt_Cond &lt;fct&gt;, Bsmt_Exposure &lt;fct&gt;, …</code></pre>
+#   Mas_Vnr_Area &lt;dbl&gt;, Exter_Qual &lt;fct&gt;, Exter_Cond &lt;fct&gt;, Foundation &lt;fct&gt;, …</code></pre>
 </div>
 </div>
 <ul>
@@ -263,6 +264,162 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Data preprocessing makes up a major portion of any project involving data, and data scientists devote around 80% of their time on gathering and organising data.</li>
 <li>Analyzing, filtering, manipulating, and encoding data is known as “data preprocessing,” and it is done so that a machine learning algorithm can comprehend and use the processed output.</li>
 <li>The Euclidean distance is more sensitive to outliers because of the squared term in the formula.</li>
+<li>Most distance measures are also sensitive to the <strong>scale</strong> of the features.
+<ul>
+<li>Data with features that have different scales will bias the distance measures, as those with large values will contribute most to the distance between the samples.</li>
+</ul></li>
+<li>For example consider the 3 homes below:</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>(ames <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ames)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">==</span> <span class="dv">423</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, Bedroom_AbvGr, Year_Built) <span class="ot">-&gt;</span> home1</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+     id Bedroom_AbvGr Year_Built
+  &lt;int&gt;         &lt;int&gt;      &lt;int&gt;
+1   423             4       2008</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(ames <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ames)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">==</span> <span class="dv">424</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, Bedroom_AbvGr, Year_Built) <span class="ot">-&gt;</span> home2</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+     id Bedroom_AbvGr Year_Built
+  &lt;int&gt;         &lt;int&gt;      &lt;int&gt;
+1   424             2       2008</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>(ames <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ames)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">==</span> <span class="dv">6</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, Bedroom_AbvGr, Year_Built) <span class="ot">-&gt;</span> home3</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+     id Bedroom_AbvGr Year_Built
+  &lt;int&gt;         &lt;int&gt;      &lt;int&gt;
+1     6             3       1998</code></pre>
+</div>
+</div>
+<ul>
+<li>Now let’s calculate the Euclidean distance between <em>home 1</em> and <em>home 2</em>, and <em>home1</em> and <em>home 3</em>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Euclidean distance between home 1 and home 2</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>ames <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">423</span>, <span class="dv">424</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Bedroom_AbvGr, Year_Built)  <span class="sc">%&gt;%</span> </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dist</span>(<span class="at">method =</span> <span class="st">"euclidean"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  1
+2 2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Euclidean distance between home 1 and home 3</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ames <span class="sc">%&gt;%</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">423</span>, <span class="dv">6</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Bedroom_AbvGr, Year_Built)  <span class="sc">%&gt;%</span> </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dist</span>(<span class="at">method =</span> <span class="st">"euclidean"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         1
+2 10.04988</code></pre>
+</div>
+</div>
+<ul>
+<li>We can see that the Euclidean distance between <em>home 1</em> and <em>home 3</em> is greater than that of <em>home 1</em> and <em>home 2</em>.</li>
+<li>This is due to the large difference in the <code>Year_Built</code> with <em>home 2</em>.</li>
+<li>Now let us standardize these features and see if there is any changes in the Euclidean distance.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Euclidean distance between home 1 and home 2 after standardization</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ames <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  caret<span class="sc">::</span><span class="fu">preProcess</span>(<span class="at">method =</span> <span class="fu">c</span>(<span class="st">"center"</span>, <span class="st">"scale"</span>)) <span class="sc">%&gt;%</span> <span class="co"># standardize the data</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(<span class="at">newdata  =</span> ames) <span class="sc">%&gt;%</span> <span class="co"># Apply the preprocessed transformation to the original data</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">423</span>, <span class="dv">424</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Bedroom_AbvGr, Year_Built)  <span class="sc">%&gt;%</span> </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dist</span>(<span class="at">method =</span> <span class="st">"euclidean"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         1
+2 2.416244</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Euclidean distance between home 1 and home 3, after standardization</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ames <span class="sc">%&gt;%</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  caret<span class="sc">::</span><span class="fu">preProcess</span>(<span class="at">method =</span> <span class="fu">c</span>(<span class="st">"center"</span>, <span class="st">"scale"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(<span class="at">newdata =</span> ames) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">423</span>, <span class="dv">6</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Bedroom_AbvGr, Year_Built) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dist</span>(<span class="at">method =</span> <span class="st">"euclidean"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         1
+2 1.252547</code></pre>
+</div>
+</div>
+<ul>
+<li>Now we see that the Euclidean distance between the standardized home features are more similar.</li>
+</ul>
+</section>
+<section id="choosing-k" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-k">Choosing <em>k</em></h3>
+<ul>
+<li>The performance of KNN is sensitive to the choice of <em>k</em>.</li>
+<li>Low values of <em>k</em> typically overfit and large values often underfit.</li>
+<li>Overfitting:
+<ul>
+<li>Overfitting occurs when a machine learning model learns the training data too well, to the point that it memorizes the noise and random fluctuations in the data. As a result, the model fails to generalize well to unseen data, leading to poor performance on the test set or new data.</li>
+<li>Signs of overfitting:
+<ul>
+<li>The model has high accuracy on the training data but performs poorly on the test data.</li>
+<li>There is a significant gap between the training and test performance metrics.</li>
+<li>The model captures noise, outliers, or irrelevant patterns in the training data.</li>
+</ul></li>
+<li>Causes of overfitting:
+<ul>
+<li>Having a complex model with too many parameters relative to the available training data.</li>
+<li>Insufficient regularization or constraints on the model’s complexity.</li>
+<li>Using features that are not representative of the true underlying patterns.</li>
+</ul></li>
+<li>Techniques to mitigate overfitting:
+<ul>
+<li>Collect more data if possible to provide a better representation of the underlying patterns.</li>
+<li>Simplify the model by reducing the number of parameters or using feature selection techniques.</li>
+<li>Apply regularization techniques like L1 or L2 regularization, which penalize large parameter values.</li>
+<li>Use cross-validation to assess model performance and tune hyperparameters.</li>
+</ul></li>
+</ul></li>
+<li>Underfitting:
+<ul>
+<li>Underfitting occurs when a machine learning model is too simple to capture the underlying patterns in the data. The model fails to learn the relationships and tends to have high bias, resulting in poor performance both on the training and test data.</li>
+<li>Signs of underfitting:
+<ul>
+<li>The model has low accuracy on both the training and test data.</li>
+<li>The model’s performance plateaus even with more training data.</li>
+<li>The model oversimplifies the data and fails to capture the complexity of the underlying patterns.</li>
+</ul></li>
+<li>Causes of underfitting:
+<ul>
+<li>Using a very simple model with insufficient capacity to capture the relationships in the data.</li>
+<li>Not utilizing informative features or ignoring important variables.</li>
+<li>Insufficient training or convergence of the model.</li>
+</ul></li>
+<li>Techniques to mitigate underfitting:
+<ul>
+<li>Increase the complexity of the model by adding more layers, nodes, or increasing the model’s capacity.</li>
+<li>Use more informative features or perform feature engineering to extract more relevant information.</li>
+<li>Train the model for more epochs or increase the number of iterations to allow it to learn better.</li>
+</ul></li>
+</ul></li>
 </ul>
 </section>
 </section>

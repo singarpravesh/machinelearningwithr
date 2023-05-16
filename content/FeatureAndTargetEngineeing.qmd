@@ -1,0 +1,35 @@
+---
+title: "Feature and Target Engineering"
+format: 
+  html:
+    toc: true
+editor_options: 
+  chunk_output_type: console
+---
+
+### Introduction
+- Feature engineering and target engineering are techniques used in machine learning to create or transform input features and target variables, respectively, in order to improve the performance of predictive models.
+- Feature Engineering:
+  - Feature engineering involves creating or transforming input features (also called independent variables or predictors) to enhance the representation of the data for machine learning models. The goal is to extract relevant information or create new features that better capture the underlying patterns and relationships in the data.
+  - Some common techniques used in feature engineering include:
+    - Creating interaction terms by combining multiple features.
+    - Transforming numerical features (e.g., logarithmic or square root transformations) to improve linearity or scale.
+    - Binning or discretizing continuous features to capture non-linear relationships.
+    - Encoding categorical variables using techniques like one-hot encoding or ordinal encoding.
+        Extracting useful information from date/time features, such as day of the week or hour of the day.
+        Creating statistical features, such as mean, median, or standard deviation, based on groups or windows.
+
+    Effective feature engineering can help models better understand the data, improve predictive accuracy, reduce overfitting, and uncover hidden patterns that may not be apparent in the original raw data.
+
+    Target Engineering:
+    Target engineering involves transforming the target variable (also known as the dependent variable or response variable) in a machine learning problem. This is typically done when the original target variable is not directly suitable for modeling or requires modification to better align with the model's assumptions or objectives.
+
+    Some examples of target engineering techniques are:
+        Transforming the target variable to address skewness or non-normality using techniques like logarithmic or Box-Cox transformations.
+        Creating a binary target variable by converting a multi-class problem into a binary classification task.
+        Re-scaling or normalizing the target variable to a specific range required by the model.
+        Combining or aggregating the target variable over groups or time periods to create a new target variable.
+
+    Target engineering aims to improve the modeling process by aligning the target variable with the model's assumptions or specific requirements, resulting in better model performance and interpretability.
+
+Both feature engineering and target engineering are iterative processes that involve domain knowledge, creativity, and experimentation to identify and transform the most informative features and target variables. These techniques play a crucial role in building effective machine learning models and extracting meaningful insights from data

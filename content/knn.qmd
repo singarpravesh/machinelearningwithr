@@ -88,9 +88,102 @@ nrow = 1)
 - Data preprocessing makes up a major portion of any project involving data, and data scientists devote around 80% of their time on gathering and organising data.
 - Analyzing, filtering, manipulating, and encoding data is known as "data preprocessing," and it is done so that a machine learning algorithm can comprehend and use the processed output.
 - The Euclidean distance is more sensitive to outliers because of the squared term in the formula.
+- Most distance measures are also sensitive to the **scale** of the features.
+  - Data with features that have different scales will bias the distance measures, as those with large values will contribute most to the distance between the samples.
+- For example consider the 3 homes below:
+```{r}
+#| code-fold: true
+(ames %>% 
+  mutate(id = 1:nrow(ames)) %>% 
+  filter(id == 423) %>% 
+  select(id, Bedroom_AbvGr, Year_Built) -> home1
+)
+(ames %>% 
+  mutate(id = 1:nrow(ames)) %>% 
+  filter(id == 424) %>% 
+  select(id, Bedroom_AbvGr, Year_Built) -> home2
+)
+(ames %>% 
+  mutate(id = 1:nrow(ames)) %>% 
+  filter(id == 6) %>% 
+  select(id, Bedroom_AbvGr, Year_Built) -> home3
+)
+```
 
+- Now let's calculate the Euclidean distance between *home 1* and *home 2*, and *home1* and *home 3*. 
+```{r}
+# Euclidean distance between home 1 and home 2
+ames %>% 
+  slice(423, 424) %>% 
+  select(Bedroom_AbvGr, Year_Built)  %>% 
+  dist(method = "euclidean")
 
+# Euclidean distance between home 1 and home 3
+ames %>% 
+  slice(423, 6) %>% 
+  select(Bedroom_AbvGr, Year_Built)  %>% 
+  dist(method = "euclidean")
 
+```
+
+- We can see that the Euclidean distance between *home 1* and *home 3* is greater than that of *home 1* and *home 2*.
+- This is due to the large difference in the `Year_Built` with *home 2*.
+- Now let us standardize these features and see if there is any changes in the 
+Euclidean distance.
+
+```{r}
+# Euclidean distance between home 1 and home 2 after standardization
+ames %>% 
+  caret::preProcess(method = c("center", "scale")) %>% # standardize the data
+  predict(newdata  = ames) %>% # Apply the preprocessed transformation to the original data
+  slice(423, 424) %>% 
+  select(Bedroom_AbvGr, Year_Built)  %>% 
+  dist(method = "euclidean")
+
+# Euclidean distance between home 1 and home 3, after standardization
+ames %>% 
+  caret::preProcess(method = c("center", "scale")) %>% 
+  predict(newdata = ames) %>% 
+  slice(423, 6) %>% 
+  select(Bedroom_AbvGr, Year_Built) %>% 
+  dist(method = "euclidean")
+```
+
+- Now we see that the Euclidean distance between the standardized home features are more similar.
+
+### Choosing *k*
+- The performance of KNN is sensitive to the choice of *k*.
+- Low values of *k* typically overfit and large values often underfit.
+- Overfitting:  
+  - Overfitting occurs when a machine learning model learns the training data too well, to the point that it memorizes the noise and random fluctuations in the data. As a result, the model fails to generalize well to unseen data, leading to poor performance on the test set or new data.
+  - Signs of overfitting:
+    - The model has high accuracy on the training data but performs poorly on the test data.
+    - There is a significant gap between the training and test performance metrics.
+    - The model captures noise, outliers, or irrelevant patterns in the training data.
+  - Causes of overfitting:
+    - Having a complex model with too many parameters relative to the available training data.
+    - Insufficient regularization or constraints on the model's complexity.
+    - Using features that are not representative of the true underlying patterns.
+  - Techniques to mitigate overfitting:
+    - Collect more data if possible to provide a better representation of the underlying patterns.
+    - Simplify the model by reducing the number of parameters or using feature selection techniques.
+    - Apply regularization techniques like L1 or L2 regularization, which penalize large parameter values.
+    - Use cross-validation to assess model performance and tune hyperparameters.
+
+- Underfitting:
+  - Underfitting occurs when a machine learning model is too simple to capture the underlying patterns in the data. The model fails to learn the relationships and tends to have high bias, resulting in poor performance both on the training and test data.
+  - Signs of underfitting:
+    - The model has low accuracy on both the training and test data.
+    - The model's performance plateaus even with more training data.
+    - The model oversimplifies the data and fails to capture the complexity of the underlying patterns.
+  - Causes of underfitting:
+    - Using a very simple model with insufficient capacity to capture the relationships in the data.
+    - Not utilizing informative features or ignoring important variables.
+    - Insufficient training or convergence of the model.
+  - Techniques to mitigate underfitting:
+    - Increase the complexity of the model by adding more layers, nodes, or increasing the model's capacity.
+    - Use more informative features or perform feature engineering to extract more relevant information.
+    - Train the model for more epochs or increase the number of iterations to allow it to learn better.
 
 
 
